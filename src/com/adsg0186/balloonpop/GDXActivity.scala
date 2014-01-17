@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.github.adsgray.gdxtry1.engine.WorldIF
-import com.github.adsgray.gdxtry1.engine.input.DefaultDirectionListener
 import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector
 import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
@@ -44,12 +43,6 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
     var camera: OrthographicCamera = null
     var renderer: Renderer = null
     var game: Game = null
-
-    object testDirectionListener extends DefaultDirectionListener {
-      // do what on tap?
-      override def onTap(x: Float, y: Float, count: Int) = {
-      }
-    }
 
     var worldTimer: Option[Timer] = None
     var worldTick: Option[TimerTask] = None
@@ -88,8 +81,8 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       game = new BalloonPopGame(world, renderer)
       game.init
       game.start
-      startWorldTicker
       Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(camera, game.asInstanceOf[BalloonPopGame].getDirectionListener))
+      startWorldTicker
     }
 
     def dispose(): Unit = {
