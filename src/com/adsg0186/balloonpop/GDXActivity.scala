@@ -1,26 +1,25 @@
 package com.adsg0186.balloonpop
 
-import android.app.Activity
-import com.badlogic.gdx.backends.android.AndroidApplication
-import com.badlogic.gdx.ApplicationListener
-import android.os.Bundle
-import android.content.Context
-import com.github.adsgray.gdxtry1.engine.util.GameFactory
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.OrthographicCamera
-import android.util.Log
-import com.github.adsgray.gdxtry1.engine.output.Renderer
-import com.github.adsgray.gdxtry1.engine.input.DefaultDirectionListener
-import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector.DirectionListener.FlingInfo
 import java.util.Timer
-import com.github.adsgray.gdxtry1.engine.util.WorldTickTask
 import java.util.TimerTask
+
+import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
-import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector
+import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.graphics.GL10
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.github.adsgray.gdxtry1.engine.WorldIF
+import com.github.adsgray.gdxtry1.engine.input.DefaultDirectionListener
+import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector
+import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
+import com.github.adsgray.gdxtry1.engine.util.GameFactory
+import com.github.adsgray.gdxtry1.engine.util.WorldTickTask
+
+import android.os.Bundle
+import android.util.Log
 
 //class GDXActivity extends Activity {
 class GDXActivity extends AndroidApplication with ActivityUtil {

@@ -1,11 +1,11 @@
 package com.adsg0186.balloonpop
 
+import com.github.adsgray.gdxtry1.engine.WorldIF
+import com.github.adsgray.gdxtry1.engine.input.DefaultDirectionListener
+import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector.DirectionListener
+import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
 import com.github.adsgray.gdxtry1.engine.util.GameCommand
-import com.github.adsgray.gdxtry1.engine.WorldIF
-import com.github.adsgray.gdxtry1.engine.output.Renderer
-import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector.DirectionListener
-import com.github.adsgray.gdxtry1.engine.input.DefaultDirectionListener
 
 case class myDirectionListener(world: WorldIF, renderer: Renderer) extends DefaultDirectionListener {
   override def onTap(x: Float, y: Float, count: Int) = {

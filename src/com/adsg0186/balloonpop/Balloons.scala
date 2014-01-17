@@ -1,20 +1,15 @@
 package com.adsg0186.balloonpop
 
-import com.github.adsgray.gdxtry1.engine.blob.BlobIF
-import com.github.adsgray.gdxtry1.engine.blob.BaseBlob
-import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobDecorator
-import com.github.adsgray.gdxtry1.engine.position.PositionIF
-import com.github.adsgray.gdxtry1.engine.velocity.VelocityIF
-import com.github.adsgray.gdxtry1.engine.accel.AccelIF
-import com.github.adsgray.gdxtry1.engine.output.Renderer
-import com.github.adsgray.gdxtry1.engine.output.Renderer.RenderConfigIF
-import com.github.adsgray.gdxtry1.engine.WorldIF
-import com.github.adsgray.gdxtry1.engine.util.GameFactory
-import com.github.adsgray.gdxtry1.engine.util.BlobFactory
-import com.github.adsgray.gdxtry1.engine.util.PositionFactory
-import com.github.adsgray.gdxtry1.engine.util.PathFactory
 import java.util.Random
+
+import com.github.adsgray.gdxtry1.engine.blob.BlobIF
+import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobDecorator
 import com.github.adsgray.gdxtry1.engine.extent.CircleExtent
+import com.github.adsgray.gdxtry1.engine.output.Renderer
+import com.github.adsgray.gdxtry1.engine.util.BlobFactory
+import com.github.adsgray.gdxtry1.engine.util.GameFactory
+import com.github.adsgray.gdxtry1.engine.util.PathFactory
+import com.github.adsgray.gdxtry1.engine.util.PositionFactory
 
 // Balloons are worth points when you pop them
 trait Balloon {
