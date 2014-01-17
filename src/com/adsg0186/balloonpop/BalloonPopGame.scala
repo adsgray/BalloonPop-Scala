@@ -36,7 +36,15 @@ class BalloonPopGame(world:WorldIF, renderer:Renderer)  extends Game {
     initDirectionListener
   }
   
-  def start(): Unit = ??? 
+  def start(): Unit = {
+    /*
+     * create a nullBlob with a tickdeathtimer loop that at random
+     * intervals creates some balloons that come into the world
+     * have it look at world.getNumTargets
+     */
+    
+  }
+
   def stop(): Unit = ???
 
   def save(): Unit = ??? 

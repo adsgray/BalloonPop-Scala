@@ -36,7 +36,7 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
 
   class GDXApp extends ApplicationListener {
     val CAMERA_WIDTH = 800;
-	val CAMERA_HEIGHT = 1422;
+    val CAMERA_HEIGHT = 1422;
 
 	// TODO: fix
 	var world:WorldIF = null
@@ -57,6 +57,8 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
 	
 	def startWorldTicker = {
 	    // create timer task that will call tick on world every 25 ms
+	    val ticksPerSecond = 25
+	    val msBetweenTicks = 1000 / ticksPerSecond
 
 	    worldTimer = worldTimer match {
 	      case t @ Some(timer) => t
@@ -71,18 +73,17 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
 	    for {
 	      timer <- worldTimer
 	      task <- worldTick
-	    } yield timer.scheduleAtFixedRate(task, 0, 25)
+	    } yield timer.scheduleAtFixedRate(task, 0, msBetweenTicks)
 	}
 	
    def create(): Unit = {
-     
-	shapes = new ShapeRenderer()
-	batch = new SpriteBatch()
-	camera = new OrthographicCamera()
-	camera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT); // the camera is like a window into our game world
-	Renderer.createRealInstance(shapes, batch)
-	renderer = Renderer.getRealInstance
-	world = GameFactory.defaultWorld;
+    shapes = new ShapeRenderer()
+    batch = new SpriteBatch()
+    camera = new OrthographicCamera()
+    camera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT); // the camera is like a window into our game world
+    Renderer.createRealInstance(shapes, batch)
+    renderer = Renderer.getRealInstance
+    world = GameFactory.defaultWorld;
      
      Gdx.graphics.setContinuousRendering(false)
      game = new BalloonPopGame(world, renderer)
