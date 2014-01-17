@@ -14,6 +14,7 @@ import com.github.adsgray.gdxtry1.engine.util.BlobFactory
 import com.github.adsgray.gdxtry1.engine.util.PositionFactory
 import com.github.adsgray.gdxtry1.engine.util.PathFactory
 import java.util.Random
+import com.github.adsgray.gdxtry1.engine.extent.CircleExtent
 
 // Balloons are worth points when you pop them
 trait Balloon {
@@ -37,13 +38,24 @@ object Balloons {
 
   var renderer:Option[Renderer] = null
   def setRenderer(r:Renderer) = renderer = Some(r)
+  def balloonColor = GameFactory.randomColor
+
+  // TODO: make these random-ish:
+  def balloonPosition = {
+    PositionFactory.origin
+  }
+
+  def balloonPath = {
+    PathFactory.stationary
+  }
 
   def balloonBlob:BlobIF = {
     val r = renderer.get
-    val rc = new r.CircleConfig(GameFactory.randomColor, smallBalloonSize)
-    val pos = PositionFactory.origin
-    val path = PathFactory.stationary
-    BlobFactory.circleBlob(pos, path, rc, r)
+    val size = smallBalloonSize
+    val rc = new r.CircleConfig(balloonColor, size)
+    val blob = BlobFactory.circleBlob(balloonPosition, balloonPath, rc, r)
+    blob.setExtent(new CircleExtent(size))
+    blob
   }
 
   def smallBalloonSize = 20
@@ -53,8 +65,10 @@ object Balloons {
   def largeBalloon:Balloon = {
     val r = renderer.get
     val b = balloonBlob
-    val rc = new r.CircleConfig(GameFactory.randomColor, largeBalloonSize)
+    val size = largeBalloonSize
+    val rc = new r.CircleConfig(balloonColor, size)
     b.setRenderConfig(rc)
+    b.setExtent(new CircleExtent(size))
     LargeBalloon(b)
   }
 
