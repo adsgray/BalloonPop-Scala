@@ -11,11 +11,6 @@ class MainActivity extends Activity with ActivityUtil {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main);
     
-    //ToastMessage.makeToastButton(findView[Button](R.id.toastbutton), getApplicationContext())
-    /*
-    findView[Button](R.id.testbutton).onClick { v => goToActivity(classOf[TestActivity]) }
-    findView[Button](R.id.gdxbutton).onClick { v => goToActivity(classOf[GDXActivity])}
-    * 
-    */
+    findView[Button](R.id.play_button).onClick { v => goToActivity(classOf[GDXActivity])}
   }
 }

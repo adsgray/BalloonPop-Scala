@@ -1,16 +1,20 @@
 package com.adsg0186.balloonpop
 
 import java.util.Random
+import com.github.adsgray.gdxtry1.engine.BlobCluster
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF
+import com.github.adsgray.gdxtry1.engine.blob.BlobPath
 import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobDecorator
 import com.github.adsgray.gdxtry1.engine.extent.CircleExtent
 import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.position.BlobPosition
+import com.github.adsgray.gdxtry1.engine.util.AccelFactory
 import com.github.adsgray.gdxtry1.engine.util.BlobFactory
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
 import com.github.adsgray.gdxtry1.engine.util.PathFactory
-import com.github.adsgray.gdxtry1.engine.BlobCluster
 import com.github.adsgray.gdxtry1.engine.util.PositionFactory
+import com.github.adsgray.gdxtry1.engine.velocity.BlobVelocity
+import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
 
 // Balloons are worth points when you pop them
 trait Balloon extends BlobDecorator {
@@ -127,21 +131,25 @@ object BalloonCluster {
   }
   
   def path = {
-    PathFactory.stationary
+    //PathFactory.stationary
+    val v = new BlobVelocity(1,1)
+    val a = AccelFactory.zeroAccel
+    new BlobPath(v, a)
   }
 
-  def balloonCluster(num:Int):BlobIF = {
+  def balloonCluster(num:Int, t:BlobTransform):BlobIF = {
     val r = Balloons.renderer.get
     val cluster = new BlobCluster(position, path, r)
     // add num blobs to cluster
     (1 to num) map { i =>
-      cluster.absorbBlob(Balloons.randomBalloon)
+      cluster.absorbBlob(Balloons.randomBalloon, t)
     }
+    cluster.setDebugStr(s"cluster ${num}")
     cluster
   }
   
   val clusterSizes = List(1,2,3,4,5)
-  def randomCluster:BlobIF = {
-    balloonCluster(clusterSizes(Balloons.rnd.nextInt(clusterSizes.size)))
+  def randomCluster(t:BlobTransform):BlobIF = {
+    balloonCluster(clusterSizes(Balloons.rnd.nextInt(clusterSizes.size)), t)
   }
 }

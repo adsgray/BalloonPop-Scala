@@ -6,6 +6,8 @@ import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector.Di
 import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
 import com.github.adsgray.gdxtry1.engine.util.GameCommand
+import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
+import com.github.adsgray.gdxtry1.engine.blob.BlobIF
 
 case class myDirectionListener(world: WorldIF, renderer: Renderer) extends DefaultDirectionListener {
   override def onTap(x: Float, y: Float, count: Int) = {
@@ -16,6 +18,7 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
     // and at death tells a ScoreManager (or something) how many
     // ScoreManager determines the score/combo bonuses and
     // decided which sounds to play for score/combo
+    super.onTap(x, y, count)
   }
 }
 
@@ -36,12 +39,30 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     initDirectionListener
   }
 
+  // TODO: put this somewhere reusable
+  val addTargetToWorld = new BlobTransform() {
+    override def transform(b:BlobIF) = {
+      b.setWorld(world)
+      world.addTargetToWorld(b)
+      b
+    }
+  }
+
   def start(): Unit = {
     /*
      * create a nullBlob with a tickdeathtimer loop that at random
      * intervals creates some balloons that come into the world
      * have it look at world.getNumTargets
      */
+    
+    // test: create 5 balloon clusters
+    // with each cluster constituent added to world as a target
+    (1 to 5) map { i => 
+      val b = BalloonCluster.randomCluster(addTargetToWorld)
+      b.setLifeTime(500)
+      b.setWorld(world)
+      world.addBlobToWorld(b)
+    }
 
   }
 
