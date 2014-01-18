@@ -8,6 +8,7 @@ import com.github.adsgray.gdxtry1.engine.util.Game
 import com.github.adsgray.gdxtry1.engine.util.GameCommand
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF
+import android.util.Log
 
 case class myDirectionListener(world: WorldIF, renderer: Renderer) extends DefaultDirectionListener {
   override def onTap(x: Float, y: Float, count: Int) = {
@@ -42,6 +43,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
   // TODO: put this somewhere reusable
   val addTargetToWorld = new BlobTransform() {
     override def transform(b:BlobIF) = {
+      Log.d("trace", "adding target to world")
       b.setWorld(world)
       world.addTargetToWorld(b)
       b
@@ -66,9 +68,13 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
 
   }
 
-  def stop(): Unit = ???
+  def stop(): Unit = {
+    // TODO
+  }
 
-  def save(): Unit = ???
+  def save(): Unit = {
+    // TODO
+  }
 
   def getDifficultySetter(): GameCommand = ???
   def getFinalScore(): Int = ???

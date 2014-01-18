@@ -89,7 +89,7 @@ object Balloons {
   // get a largeBalloon and re-wrap it as an AsteroidBalloon
   // also make it rainbow-y
   def asteroidBalloon: Balloon = largeBalloon match {
-    case LargeBalloon(b) => AsteroidBalloon(BlobFactory.rainbowColorCycler(b, 10))
+    case LargeBalloon(b) => AsteroidBalloon(BlobFactory.rainbowColorCycler(b, 3))
   }
 
   // TODO: allow a small chance of asteroidBalloon
@@ -127,12 +127,12 @@ object BalloonCluster {
   
   // TODO choose cluster position and path randomly
   def position = {
-    PositionFactory.origin
+    new BlobPosition(10,10)
   }
   
   def path = {
     //PathFactory.stationary
-    val v = new BlobVelocity(1,1)
+    val v = new BlobVelocity(5,5)
     val a = AccelFactory.zeroAccel
     new BlobPath(v, a)
   }
@@ -142,7 +142,13 @@ object BalloonCluster {
     val cluster = new BlobCluster(position, path, r)
     // add num blobs to cluster
     (1 to num) map { i =>
-      cluster.absorbBlob(Balloons.randomBalloon, t)
+      val b = Balloons.randomBalloon
+      b.setLifeTime(500)
+      // ugh, mutates b:
+      PathFactory.composePositions(b, cluster)
+      // bug in BlobCluster -- it doesn't perform the transformation
+      // we can do it here...
+      cluster.absorbBlob(t.transform(b))
     }
     cluster.setDebugStr(s"cluster ${num}")
     cluster
