@@ -15,3 +15,4 @@ It will be timed (how many balloons can you pop in 1 minute?) and kid-friendly
 4. sounds
 5. time limited game with countdown
 6. high scores (top 5, also top 5 score/taps ratio)
+7. Lock orientation at portrait

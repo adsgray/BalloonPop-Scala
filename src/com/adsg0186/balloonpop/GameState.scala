@@ -1,5 +1,7 @@
 package com.adsg0186.balloonpop
 
+import android.util.Log
+
 trait GameState {
   var score = 0
   var ticksLeft = 1000
@@ -16,5 +18,9 @@ trait GameState {
 object GameState extends GameState {
   override def incScore(delta:Int) = {
     super.incScore(delta)
+    ScoreDisplay.setScore(score)
+    Log.d("trace", s"gamestate incscore by ${delta} score is ${score}")
   }
+  
+  def destroy = init
 }

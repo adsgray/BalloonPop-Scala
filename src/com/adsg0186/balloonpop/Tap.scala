@@ -22,7 +22,6 @@ object tapCollisionTrigger extends BlobTrigger {
     secondary match {
       case balloon: Balloon => 
         GameState.incScore(balloon.points)
-        ScoreDisplay.setScore(GameState.score)
         balloon.reactToPop
     }
 
@@ -43,18 +42,20 @@ object onTapComplete extends BlobTrigger {
 case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   var popped = 0
   var points = 0
-  val comboBonusPoints = 100
+  val comboBonusPoints = 50
   
   def done:Unit = {
     Log.d("trace", s"tap got ${popped} balloons for ${points} points")
     
     // combo bonus points:
     popped match {
-      case 1 => // no bonuses
-      case num @ _ => 
+      case num if (num > 1 ) => 
         // 2-combo gets you 100 points, 3-combo 200, etc...
-        GameState.incScore((num - 1) * comboBonusPoints)
+        val bonus = (num - 1) * comboBonusPoints
+        Log.d("trace", s"combo bonus: ${bonus}")
+        GameState.incScore(bonus)
         // also play a sound and display a message
+      case _ => Unit // no bonus otherwise
     }
   }
 }

@@ -89,6 +89,7 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       shapes.dispose
       batch.dispose
       Renderer.get().dispose
+      game.stop
     }
 
     def pause(): Unit = {

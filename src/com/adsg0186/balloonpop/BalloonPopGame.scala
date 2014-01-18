@@ -43,7 +43,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
   def init(): Unit = {
     initDirectionListener
     // throw away return value as it's creating a singleton
-    ScoreDisplay(renderer)
+    world.addBlobToWorld(ScoreDisplay(renderer))
   }
 
   // TODO: put this somewhere reusable
@@ -75,7 +75,8 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
   }
 
   def stop(): Unit = {
-    // TODO
+    ScoreDisplay.destroy
+    GameState.destroy
   }
 
   def save(): Unit = {

@@ -18,11 +18,10 @@ import com.badlogic.gdx.graphics.Color
 
 class ScoreDisplay(val r:Renderer) extends BaseTextBlob(null, null, null, r, null) {
   // at the bottom:
-  setPosition(new BlobPosition(10,10))
+  setPosition(new BlobPosition(10,50))
   setPath(PathFactory.stationary)
-  val rc = new r.TextConfig(Color.WHITE, 1.8f)
+  val rc = new r.TextConfig(Color.WHITE, 2.5f)
   setRenderConfig(rc)
-  
 }
 
 object ScoreDisplay {
@@ -32,6 +31,7 @@ object ScoreDisplay {
   def apply(r:Renderer):ScoreDisplay = display match {
     case None => 
       display = Some(new ScoreDisplay(r))
+      setScore(0)
       display.get
     case Some(d) => 
       display.get
@@ -41,5 +41,8 @@ object ScoreDisplay {
     case Some(d) => d.setText(s"Score: ${score}")
     case None => // error
   }
+  
+  // braces for clarity
+  def destroy = { display = None }
   
 }
