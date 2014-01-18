@@ -16,9 +16,15 @@ import android.util.Log
 object tapCollisionTrigger extends BlobTrigger {
   override def trigger(source: BlobIF, secondary: BlobIF): BlobIF = {
     Log.d("trace", "Tap collided with a balloon!")
+
     Tap.collision
-    // also make secondary go away here:
-    // replaceWithExplosion(secondary)
+
+    secondary match {
+      case balloon: Balloon => 
+        // points += balloon.points
+        balloon.reactToPop
+    }
+
     source
   }
 }
@@ -37,6 +43,8 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   var popped = 0
 }
 
+// If there were multiple Taps we'd have to map from baseBlob to TapBlob
+// because the World collision trigger passes baseBlob as source.
 object Tap {
 
   val extentRadius = 50

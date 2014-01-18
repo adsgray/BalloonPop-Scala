@@ -15,6 +15,7 @@ import com.github.adsgray.gdxtry1.engine.util.PathFactory
 import com.github.adsgray.gdxtry1.engine.util.PositionFactory
 import com.github.adsgray.gdxtry1.engine.velocity.BlobVelocity
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
+import android.util.Log
 
 // Balloons are worth points when you pop them
 trait Balloon extends BlobDecorator {
@@ -22,7 +23,7 @@ trait Balloon extends BlobDecorator {
   def reactToPop = {
     // replace with explosion animation
     // and play sound
-    ???
+    Log.d("trace", "balloon pop")
   }
 }
 
@@ -31,7 +32,7 @@ trait Balloon extends BlobDecorator {
 trait asteroidBalloonTrait extends Balloon {
   override def reactToPop = {
     // replace this balloon with a bunch of smaller balloons
-    ???
+    Log.d("trace", "asteroid pop")
   }
 }
 
