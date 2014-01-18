@@ -18,9 +18,9 @@ import com.badlogic.gdx.graphics.Color
 
 class ScoreDisplay(val r:Renderer) extends BaseTextBlob(null, null, null, r, null) {
   // at the bottom:
-  setPosition(new BlobPosition(10,50))
+  setPosition(new BlobPosition(10,100))
   setPath(PathFactory.stationary)
-  val rc = new r.TextConfig(Color.WHITE, 2.5f)
+  val rc = new r.TextConfig(Color.WHITE, 3.0f)
   setRenderConfig(rc)
 }
 
