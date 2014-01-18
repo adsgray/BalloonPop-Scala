@@ -17,11 +17,12 @@ object tapCollisionTrigger extends BlobTrigger {
   override def trigger(source: BlobIF, secondary: BlobIF): BlobIF = {
     Log.d("trace", "Tap collided with a balloon!")
 
-    Tap.collision
+    Tap.collision(secondary) // to track how many balloons this tap has popped
 
     secondary match {
       case balloon: Balloon => 
-        // points += balloon.points
+        GameState.incScore(balloon.points)
+        ScoreDisplay.setScore(GameState.score)
         balloon.reactToPop
     }
 
@@ -41,6 +42,21 @@ object onTapComplete extends BlobTrigger {
 
 case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   var popped = 0
+  var points = 0
+  val comboBonusPoints = 100
+  
+  def done:Unit = {
+    Log.d("trace", s"tap got ${popped} balloons for ${points} points")
+    
+    // combo bonus points:
+    popped match {
+      case 1 => // no bonuses
+      case num @ _ => 
+        // 2-combo gets you 100 points, 3-combo 200, etc...
+        GameState.incScore((num - 1) * comboBonusPoints)
+        // also play a sound and display a message
+    }
+  }
 }
 
 // If there were multiple Taps we'd have to map from baseBlob to TapBlob
@@ -61,15 +77,18 @@ object Tap {
   }
 
   def remove = {
-    // tell some kind of game controller how many balloons this Tap popped
-    // for the purpose of score/bonus calculation
-    currentTap map { t =>
-      Log.d("trace", s"tap got ${t.popped} balloons")
-    }
+    currentTap map { t => t.done }
     currentTap = None
   }
 
-  def collision = currentTap map { t => t.popped += 1 }
+  def collision(b:BlobIF) = {
+    currentTap map { t => 
+      t.popped += 1 
+      b match {
+        case balloon : Balloon => t.points += balloon.points
+      }
+    }
+  }
 
   def createNewTapBlob(pos: BlobPosition, w: WorldIF, r: Renderer): BlobIF = {
     //public static BlobIF circleBlob(PositionIF p, BlobPath path, CircleConfig rc, Renderer r) {

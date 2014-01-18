@@ -19,11 +19,16 @@ import android.util.Log
 
 // Balloons are worth points when you pop them
 trait Balloon extends BlobDecorator {
-  def points
-  def reactToPop = {
-    // replace with explosion animation
-    // and play sound
-    Log.d("trace", "balloon pop")
+  def points:Int
+
+  def leaveCluster = if (getCluster != null) getCluster.leaveCluster(baseBlob)
+  def leaveWorld = getWorld.removeBlobFromWorld(this)
+
+  def reactToPop:Unit = {
+    Log.d("trace", "balloon pop, removing from world")
+    leaveCluster
+    leaveWorld
+    // explosion animations and sounds decided by subclasses
   }
 }
 
@@ -31,8 +36,9 @@ trait Balloon extends BlobDecorator {
 // of smaller balloons in similar locations. Just override reactToPop
 trait asteroidBalloonTrait extends Balloon {
   override def reactToPop = {
+    super.reactToPop
     // replace this balloon with a bunch of smaller balloons
-    Log.d("trace", "asteroid pop")
+    // and play a different sound
   }
 }
 
@@ -150,6 +156,7 @@ object BalloonCluster {
       // bug in BlobCluster -- it doesn't perform the transformation
       // we can do it here...
       cluster.absorbBlob(t.transform(b))
+      b.setCluster(cluster)
     }
     cluster.setDebugStr(s"cluster ${num}")
     cluster

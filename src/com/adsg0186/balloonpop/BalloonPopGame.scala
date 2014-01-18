@@ -42,6 +42,8 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
 
   def init(): Unit = {
     initDirectionListener
+    // throw away return value as it's creating a singleton
+    ScoreDisplay(renderer)
   }
 
   // TODO: put this somewhere reusable
@@ -63,7 +65,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     
     // test: create 5 balloon clusters
     // with each cluster constituent added to world as a target
-    (1 to 5) map { i => 
+    (1 to 1) map { i => 
       val b = BalloonCluster.randomCluster(addTargetToWorld)
       b.setLifeTime(500)
       b.setWorld(world)
