@@ -13,7 +13,7 @@ import com.github.adsgray.gdxtry1.engine.util.PositionFactory
 
 // Balloons are worth points when you pop them
 trait Balloon {
-  def getPoints
+  def points
   def reactToPop = {
     // replace with explosion animation
     // and play sound
@@ -21,12 +21,25 @@ trait Balloon {
   }
 }
 
+// when you pop this type of balloon it breaks into a bunch
+// of smaller balloons in similar locations. Just override reactToPop
+trait asteroidBalloonTrait extends Balloon {
+  override def reactToPop = {
+    // replace this balloon with a bunch of smaller balloons
+    ???
+  }
+}
+
 case class SmallBalloon(b:BlobIF) extends BlobDecorator(b) with Balloon {
-  override def getPoints = 20
+  override def points = 20
 }
 case class LargeBalloon(b:BlobIF) extends BlobDecorator(b) with Balloon {
-  override def getPoints = 10
+  override def points = 10
 }
+case class AsteroidBalloon(b:BlobIF) extends BlobDecorator(b) with asteroidBalloonTrait {
+  override def points = 15
+}
+
 
 object Balloons {
   val rnd = new Random
@@ -66,7 +79,15 @@ object Balloons {
     b.setExtent(new CircleExtent(size))
     LargeBalloon(b)
   }
+  
+  // get a largeBalloon and re-wrap it as an AsteroidBalloon
+  // also make it rainbow-y
+  def asteroidBalloon:Balloon = largeBalloon match {
+    case LargeBalloon(b) => AsteroidBalloon(BlobFactory.rainbowColorCycler(b, 10))
+  }
 
+  // TODO: allow a small chance of asteroidBalloon
+  // might need a map...
   def coinFlip = rnd.nextInt(100) < 50
   def randomBalloon:Balloon = if (coinFlip) smallBalloon else largeBalloon
 }
