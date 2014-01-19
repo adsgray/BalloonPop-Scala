@@ -39,11 +39,6 @@ class BalloonCreator(b: BlobIF, num: Int, interval: Int) extends BlobDecorator(b
     // it should be immortal...
     component.tick
   }
-
-  def destroy = {
-    getWorld.removeBlobFromWorld(this)
-    setLifeTime(0)
-  }
 }
 
 object BalloonCreator {
@@ -61,4 +56,7 @@ object BalloonCreator {
       instance.get
     case Some(bc) => bc
   }
+  
+  def destroy = { instance = None }
+  def get = instance
 }

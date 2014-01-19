@@ -30,7 +30,6 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
 class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
 
   var dl: Option[myDirectionListener] = None
-  var balloonCreator: Option[BalloonCreator] = None
 
   Balloons.setRenderer(renderer)
 
@@ -43,35 +42,30 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
   def getDirectionListener: DirectionListener = dl getOrElse initDirectionListener
 
   def init(): Unit = {
+    Log.d("trace", "BalloonPopGame init")
     initDirectionListener
     // throw away return value as it's creating a singleton
     world.addBlobToWorld(ScoreDisplay(renderer))
     ScoreDisplay.refreshText
+    BalloonCreator(world) // adds itself to the world
   }
 
-  def start(): Unit = {
-    /*
-     * create a nullBlob with a tickdeathtimer loop that at random
-     * intervals creates some balloons that come into the world
-     * have it look at world.getNumTargets
-     */
+  def start(): Unit = { 
+    Log.d("trace", "BalloonPopGame start")
     
-    balloonCreator match {
-      case None => balloonCreator = Some(BalloonCreator(world))
-      case Some(bc) => Unit
-    }
   }
 
   def stop(): Unit = {
+    Log.d("trace", "BallonPopGame stop")
     ScoreDisplay.destroy
     GameState.destroy
 
     // kill the balloonCreator
-    balloonCreator map { bc => bc.destroy }
-    balloonCreator = None
+    BalloonCreator.destroy
   }
 
   def save(): Unit = {
+    Log.d("trace", "BalloonPopGame save")
     // TODO
   }
 
