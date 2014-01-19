@@ -30,6 +30,8 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
 class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
 
   var dl: Option[myDirectionListener] = None
+  var balloonCreator: Option[BalloonCreator] = None
+
   Balloons.setRenderer(renderer)
 
   protected def initDirectionListener: DirectionListener = {
@@ -53,28 +55,20 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
      * intervals creates some balloons that come into the world
      * have it look at world.getNumTargets
      */
-
-    // test: create 5 balloon clusters
-    // with each cluster constituent added to world as a target
-    (1 to 1) map { i =>
-      // The transform passed to randomCluster is what to do
-      // with each member of the cluster
-      val b = BalloonCluster.randomCluster(blobTransform { b =>
-        Log.d("trace", "adding target to world")
-        b.setWorld(world)
-        world.addTargetToWorld(b)
-        b
-      })
-      b.setLifeTime(500)
-      b.setWorld(world)
-      world.addBlobToWorld(b)
+    
+    balloonCreator match {
+      case None => balloonCreator = Some(BalloonCreator(world))
+      case Some(bc) => Unit
     }
-
   }
 
   def stop(): Unit = {
     ScoreDisplay.destroy
     GameState.destroy
+
+    // kill the balloonCreator
+    balloonCreator map { bc => bc.destroy }
+    balloonCreator = None
   }
 
   def save(): Unit = {

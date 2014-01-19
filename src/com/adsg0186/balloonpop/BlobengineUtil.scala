@@ -28,7 +28,7 @@ object blobSource {
 }
 
 object nullBlob {
-  def create =  new NullBlob(PositionFactory.origin, GameFactory.zeroVelocity(), AccelFactory.zeroAccel(), Balloons.renderer.get)
+  def create = new NullBlob(PositionFactory.origin, GameFactory.zeroVelocity(), AccelFactory.zeroAccel(), Balloons.renderer.get)
 }
 
 object BlobengineUtil {

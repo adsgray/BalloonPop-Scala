@@ -31,6 +31,7 @@ object ScoreDisplay {
   def apply(r:Renderer):ScoreDisplay = display match {
     case None => 
       display = Some(new ScoreDisplay(r))
+      display map { d => d setImmortal true }
       display.get
     case Some(d) => 
       display.get
