@@ -47,27 +47,24 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     ScoreDisplay.refreshText
   }
 
-  // TODO: put this somewhere reusable
-  val addTargetToWorld = new BlobTransform() {
-    override def transform(b:BlobIF) = {
-      Log.d("trace", "adding target to world")
-      b.setWorld(world)
-      world.addTargetToWorld(b)
-      b
-    }
-  }
-
   def start(): Unit = {
     /*
      * create a nullBlob with a tickdeathtimer loop that at random
      * intervals creates some balloons that come into the world
      * have it look at world.getNumTargets
      */
-    
+
     // test: create 5 balloon clusters
     // with each cluster constituent added to world as a target
-    (1 to 1) map { i => 
-      val b = BalloonCluster.randomCluster(addTargetToWorld)
+    (1 to 1) map { i =>
+      // The transform passed to randomCluster is what to do
+      // with each member of the cluster
+      val b = BalloonCluster.randomCluster(blobTransform { b =>
+        Log.d("trace", "adding target to world")
+        b.setWorld(world)
+        world.addTargetToWorld(b)
+        b
+      })
       b.setLifeTime(500)
       b.setWorld(world)
       world.addBlobToWorld(b)
