@@ -32,9 +32,13 @@ class GameTimer(b: BlobIF, endGame: => Unit, timeLimit:Int) extends BlobDecorato
 
   override def tick = {
     ticks += 1
+    var ret = component.tick
 
     if (ticks >= tickTimeLimit) {
       endGame
+      // remove ourselves from the world
+      GameTimer.destroy
+      ret = false
     }
 
     tickMessages.get(ticks) match {
@@ -42,7 +46,7 @@ class GameTimer(b: BlobIF, endGame: => Unit, timeLimit:Int) extends BlobDecorato
       case _ => Unit
     }
 
-    component.tick
+    ret
   }
 
 }

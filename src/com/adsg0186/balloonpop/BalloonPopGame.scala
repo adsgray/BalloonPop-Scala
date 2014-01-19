@@ -28,7 +28,7 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
       val tap = Tap(new BlobPosition(x, y), world, renderer)
     }
   }
-  
+
   def disable = { enabled = false }
   def enable = { enabled = true }
 }
@@ -65,15 +65,16 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     })
   }
 
-  def start(): Unit = { 
+  def start(): Unit = {
     Log.d("trace", "BalloonPopGame start")
-    
+
   }
 
   def stop(): Unit = {
     Log.d("trace", "BallonPopGame stop")
     ScoreDisplay.destroy
     GameState.destroy
+    FinalScoreDisplay.destroy
 
     // kill the balloonCreator
     BalloonCreator.destroy
