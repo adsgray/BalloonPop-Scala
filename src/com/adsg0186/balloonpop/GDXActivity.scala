@@ -78,6 +78,7 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       world = GameFactory.defaultWorld;
       LocalHighScore.createInstance(context)
       GameSound(context)
+      Vibrate(context)
 
       Gdx.graphics.setContinuousRendering(false)
       game = new BalloonPopGame(world, renderer)
