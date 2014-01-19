@@ -149,6 +149,7 @@ object BalloonClusterOrigin {
   
   // make these into functions so that they are executed anew
   // each time we choose one
+  // TODO: generate these programatically instead of hard-coding them?
   val origins = List(
       // starting from bottom:
       () => BalloonClusterOrigin(new BlobPosition(10,10), pathFromVel(5,5)),
@@ -158,7 +159,11 @@ object BalloonClusterOrigin {
       // starting from top:
       () => BalloonClusterOrigin(new BlobPosition(10,GameFactory.BOUNDS_Y - 10), pathFromVel(5,-5)),
       () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10,GameFactory.BOUNDS_Y - 10), pathFromVel(-5,-5)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,GameFactory.BOUNDS_Y - 10), pathFromVel(0,-5))
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,GameFactory.BOUNDS_Y - 10), pathFromVel(0,-5)),
+      
+      // starting from sides:
+      () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y / 2), pathFromVel(5,0)),
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y / 2), pathFromVel(-5,0))
   )
 
   def random = origins(Balloons.rnd.nextInt(origins.size))()
