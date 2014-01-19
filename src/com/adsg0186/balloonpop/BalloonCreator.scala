@@ -57,6 +57,9 @@ object BalloonCreator {
     case Some(bc) => bc
   }
   
-  def destroy = { instance = None }
+  def destroy = { 
+    instance map { bc => bc.getWorld.removeBlobFromWorld(bc) }
+    instance = None 
+  }
   def get = instance
 }

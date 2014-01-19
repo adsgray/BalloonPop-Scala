@@ -52,6 +52,7 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
     popped match {
       case num if (num > 1 ) => 
         b.getWorld.addBlobToWorld(flashMessageAtBlob(b, s"${popped} COMBO!"))
+        if (num > 5) GameSound.yahoo else GameSound.goodJob
         // 2-combo gets you 100 points, 3-combo 200, etc...
         val bonus = (num - 1) * comboBonusPoints
         Log.d("trace", s"combo bonus: ${bonus}")
@@ -66,8 +67,8 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
 // because the World collision trigger passes baseBlob as source.
 object Tap {
 
-  val extentRadius = 50
-  val lifeTime = 12 // half a second?
+  val extentRadius = 30
+  val lifeTime = 8 // 12 = half a second, 8 = about 1/3 of a second
   var currentTap: Option[TapBlob] = None
 
   def apply(pos: BlobPosition, w: WorldIF, r: Renderer): BlobIF = {

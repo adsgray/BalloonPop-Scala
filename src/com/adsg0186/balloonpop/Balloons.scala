@@ -36,7 +36,8 @@ trait Balloon extends BlobDecorator {
     b
   }
 
-  def popSound = {}
+  import GameSound.SoundId._
+  def popSound = GameSound.playSound(blop)
 
   def explosion = {
     leave
@@ -86,6 +87,8 @@ trait asteroidBalloonTrait extends Balloon {
     case BlobOffset(x,y) => new LinearAccel(x / offset * accelMultiplier, y / offset * accelMultiplier)
   }
 
+  override def popSound = GameSound.asteroidBam
+
   override def reactToPop = {
     // explode ourselves
     super.reactToPop
@@ -127,8 +130,10 @@ case class AsteroidBalloon(b: BlobIF) extends BlobDecorator(b) with asteroidBall
 
 object Balloons {
   val rnd = new Random
-  val maxXPos = 50
-  val maxYPos = 50
+  val maxXPos = 150
+  val maxYPos = 150
+  val minXPos = 50
+  val minYPos = 50
 
   var renderer: Option[Renderer] = null
   def setRenderer(r: Renderer) = renderer = Some(r)
@@ -136,8 +141,8 @@ object Balloons {
 
   // These are always relative to a cluster:
   def balloonPosition = {
-    val xpos = rnd.nextInt(2 * maxXPos) - maxXPos
-    val ypos = rnd.nextInt(2 * maxYPos) - maxYPos
+    val xpos = rnd.nextInt(2 * maxXPos) - maxXPos + minXPos
+    val ypos = rnd.nextInt(2 * maxYPos) - maxYPos + minYPos
     new BlobPosition(xpos, ypos)
   }
 
