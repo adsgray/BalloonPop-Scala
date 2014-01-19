@@ -2,7 +2,6 @@ package com.adsg0186.balloonpop
 
 import java.util.Timer
 import java.util.TimerTask
-
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.android.AndroidApplication
@@ -16,9 +15,10 @@ import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
 import com.github.adsgray.gdxtry1.engine.util.WorldTickTask
-
 import android.os.Bundle
 import android.util.Log
+import com.github.adsgray.gdxtry1.engine.util.LocalHighScore
+import android.content.Context
 
 //class GDXActivity extends Activity {
 class GDXActivity extends AndroidApplication with ActivityUtil {
@@ -29,10 +29,10 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
     super.onCreate(savedInstanceState)
 
     // initialize a new instance of your Game class
-    initialize(new GDXApp(), false);
+    initialize(new GDXApp(getApplicationContext), false);
   }
 
-  class GDXApp extends ApplicationListener {
+  class GDXApp(context: Context) extends ApplicationListener {
     val CAMERA_WIDTH = 800;
     val CAMERA_HEIGHT = 1422;
 
@@ -76,6 +76,7 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       Renderer.createRealInstance(shapes, batch)
       renderer = Renderer.getRealInstance
       world = GameFactory.defaultWorld;
+      LocalHighScore.createInstance(context)
 
       Gdx.graphics.setContinuousRendering(false)
       game = new BalloonPopGame(world, renderer)
