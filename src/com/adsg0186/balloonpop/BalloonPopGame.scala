@@ -13,6 +13,7 @@ import com.github.adsgray.gdxtry1.engine.util.GameCommand
 import android.util.Log
 
 case class myDirectionListener(world: WorldIF, renderer: Renderer) extends DefaultDirectionListener {
+  var enabled = true
   override def onTap(x: Float, y: Float, count: Int) = {
     // add missile to world at this position with a fixed short lifetime
     // the missile keeps track of how many targets it has killed. It
@@ -23,8 +24,13 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
     // decided which sounds to play for score/combo
 
     //super.onTap(x, y, count)
-    val tap = Tap(new BlobPosition(x, y), world, renderer)
+    if (enabled) {
+      val tap = Tap(new BlobPosition(x, y), world, renderer)
+    }
   }
+  
+  def disable = { enabled = false }
+  def enable = { enabled = true }
 }
 
 class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
@@ -48,7 +54,15 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     world.addBlobToWorld(ScoreDisplay(renderer))
     ScoreDisplay.refreshText
     BalloonCreator(world) // adds itself to the world
-    GameTimer(world)
+    GameTimer(world, {
+      // end game code
+      BalloonCreator.destroy
+
+      // disable input handler
+      dl map { d => d.disable }
+      // show final score with message "press back"
+      FinalScoreDisplay(world)
+    })
   }
 
   def start(): Unit = { 

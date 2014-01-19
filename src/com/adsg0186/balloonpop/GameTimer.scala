@@ -9,7 +9,7 @@ import com.github.adsgray.gdxtry1.engine.position.BlobPosition
 import com.github.adsgray.gdxtry1.engine.util.AccelFactory
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
 
-class GameTimer(b: BlobIF, timeLimit: Int) extends BlobDecorator(b) {
+class GameTimer(b: BlobIF, endGame: => Unit, timeLimit:Int) extends BlobDecorator(b) {
   // TODO put 25 somewhere global 
   val ticksPerSecond = 25
   val tickTimeLimit = timeLimit * ticksPerSecond
@@ -34,7 +34,7 @@ class GameTimer(b: BlobIF, timeLimit: Int) extends BlobDecorator(b) {
     ticks += 1
 
     if (ticks >= tickTimeLimit) {
-      // end the game
+      endGame
     }
 
     tickMessages.get(ticks) match {
@@ -51,9 +51,9 @@ object GameTimer {
   var instance: Option[GameTimer] = None
 
   // default is 3 seconds
-  def apply(w: WorldIF, timeLimit: Int = 60) = instance match {
+  def apply(w: WorldIF, endGame: => Unit, timeLimit:Int = 60) = instance match {
     case None =>
-      instance = Some(new GameTimer(nullBlob.create, timeLimit))
+      instance = Some(new GameTimer(nullBlob.create, endGame, timeLimit))
       instance map { b =>
         b.setPosition(new BlobPosition(50, GameFactory.BOUNDS_Y - 50))
         b setWorld w
