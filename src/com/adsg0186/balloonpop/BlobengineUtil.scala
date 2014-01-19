@@ -8,6 +8,7 @@ import com.github.adsgray.gdxtry1.engine.blob.NullBlob
 import com.github.adsgray.gdxtry1.engine.util.AccelFactory
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
 import com.github.adsgray.gdxtry1.engine.util.PositionFactory
+import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobScaleDecorator
 
 object blobTrigger {
   def apply(f: => (BlobIF,  BlobIF) => BlobIF) = new BlobTrigger() {
@@ -29,6 +30,15 @@ object blobSource {
 
 object nullBlob {
   def create = new NullBlob(PositionFactory.origin, GameFactory.zeroVelocity(), AccelFactory.zeroAccel(), Balloons.renderer.get)
+}
+
+object fastGrower {
+  def apply(b:BlobIF) = {
+    val entries = Array(
+      Array(1500, 1)
+    )
+    new BlobScaleDecorator(b, entries)
+  }
 }
 
 object BlobengineUtil {

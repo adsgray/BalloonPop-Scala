@@ -24,12 +24,32 @@ trait Balloon extends BlobDecorator {
 
   def leaveCluster = if (getCluster != null) getCluster.leaveCluster(baseBlob)
   def leaveWorld = getWorld.removeBlobFromWorld(this)
-
-  def reactToPop:Unit = {
-    Log.d("trace", "balloon pop, removing from world")
+  def leave = {
     leaveCluster
     leaveWorld
-    // explosion animations and sounds decided by subclasses
+  }
+  
+  val postExplosionTrigger = blobTrigger { (b, _) =>
+    b.clearTickDeathTriggers
+    b.setLifeTime(0)
+    b
+  }
+  
+  def popSound = { }
+
+  def explosion = {
+    leave
+    val exploding = fastGrower(getComponent)
+    exploding.clearTickDeathTriggers
+    exploding.registerTickDeathTrigger(postExplosionTrigger)
+    exploding.setLifeTime(5)
+    getWorld.addBlobToWorld(exploding)
+    exploding
+  }
+
+  def reactToPop:Unit = {
+    explosion
+    popSound
   }
 }
 
@@ -38,6 +58,7 @@ trait Balloon extends BlobDecorator {
 trait asteroidBalloonTrait extends Balloon {
   override def reactToPop = {
     super.reactToPop
+    
     // replace this balloon with a bunch of smaller balloons
     // and play a different sound
   }
