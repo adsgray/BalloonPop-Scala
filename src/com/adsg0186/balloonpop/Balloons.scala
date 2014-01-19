@@ -17,10 +17,11 @@ import com.github.adsgray.gdxtry1.engine.velocity.BlobVelocity
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
 import android.util.Log
 import com.github.adsgray.gdxtry1.engine.position.PositionIF
+import com.github.adsgray.gdxtry1.engine.accel.LinearAccel
 
 // Balloons are worth points when you pop them
 trait Balloon extends BlobDecorator {
-  def points:Int
+  def points: Int
 
   def leaveCluster = if (getCluster != null) getCluster.leaveCluster(baseBlob)
   def leaveWorld = getWorld.removeBlobFromWorld(this)
@@ -28,14 +29,14 @@ trait Balloon extends BlobDecorator {
     leaveCluster
     leaveWorld
   }
-  
+
   val postExplosionTrigger = blobTrigger { (b, _) =>
     b.clearTickDeathTriggers
     b.setLifeTime(0)
     b
   }
-  
-  def popSound = { }
+
+  def popSound = {}
 
   def explosion = {
     leave
@@ -47,7 +48,7 @@ trait Balloon extends BlobDecorator {
     exploding
   }
 
-  def reactToPop:Unit = {
+  def reactToPop: Unit = {
     explosion
     popSound
   }
@@ -55,10 +56,60 @@ trait Balloon extends BlobDecorator {
 
 // when you pop this type of balloon it breaks into a bunch
 // of smaller balloons in similar locations. Just override reactToPop
+case class BlobOffset(val x: Int, val y: Int);
 trait asteroidBalloonTrait extends Balloon {
+
+  val offset = 50
+  val childOffsets = List(
+    // top row
+    BlobOffset(offset, offset),
+    BlobOffset(0, offset),
+    BlobOffset(-offset, offset),
+
+    // middle
+    BlobOffset(offset, 0),
+    BlobOffset(-offset, 0),
+
+    // bottom row
+    BlobOffset(-offset, -offset),
+    BlobOffset(0, -offset),
+    BlobOffset(offset, -offset))
+
+  // normalized velocity along the vector
+  val velocityMultiplier = 20 
+  def velocityFromOffset(bo: BlobOffset) = bo match {
+    case BlobOffset(x, y) => new BlobVelocity(x / offset * velocityMultiplier, y / offset * velocityMultiplier)
+  }
+  
+  val accelMultiplier = -1
+  def accelFromOffset(bo: BlobOffset) = bo match {
+    case BlobOffset(x,y) => new LinearAccel(x / offset * accelMultiplier, y / offset * accelMultiplier)
+  }
+
   override def reactToPop = {
+    // explode ourselves
     super.reactToPop
-    
+
+    // then spew some small balloons out
+    childOffsets map {
+      case bo @ BlobOffset(x, y) =>
+        val pos = new BlobPosition(getPosition.getX, getPosition.getY)
+        pos.setX(pos.getX + x)
+        pos.setY(pos.getY + y)
+
+        val balloon = Balloons.smallBalloon
+        balloon.setPosition(pos)
+        balloon.setVelocity(velocityFromOffset(bo))
+        // for some reason had to set this accel here otherwise the
+        // whole game would get messed up as if the accel generated
+        // by Balloons.smallBalloon lived on forever across invocations
+        // of game.{init,start}?
+        balloon.setAccel(accelFromOffset(bo))
+        balloon.setLifeTime(125) // 5 seconds
+
+        getWorld.addTargetToWorld(balloon)
+    }
+
     // replace this balloon with a bunch of smaller balloons
     // and play a different sound
   }
@@ -78,7 +129,7 @@ object Balloons {
   val rnd = new Random
   val maxXPos = 50
   val maxYPos = 50
-  
+
   var renderer: Option[Renderer] = null
   def setRenderer(r: Renderer) = renderer = Some(r)
   def balloonColor = GameFactory.randomColor
@@ -130,7 +181,7 @@ object Balloons {
     asteroidBalloon _)
 
   def randomBalloon: Balloon = balloonChoices(rnd.nextInt(balloonChoices.size))()
-  
+
 }
 
 object BalloonPath {
@@ -155,44 +206,43 @@ object BalloonPath {
 // starting position and path for a BalloonCluster
 // pair them because they are not independent
 // eg start at top right and go down and to the left...
-case class BalloonClusterOrigin(pos:PositionIF, path:BlobPath) 
+case class BalloonClusterOrigin(pos: PositionIF, path: BlobPath)
 object BalloonClusterOrigin {
   // TODO choose cluster position and path randomly
   def randomPosition = {
-    new BlobPosition(10,10)
+    new BlobPosition(10, 10)
   }
-   
-  def pathFromVel(xvel:Int, yvel:Int) = {
+
+  def pathFromVel(xvel: Int, yvel: Int) = {
     val v = new BlobVelocity(xvel, yvel)
     val a = AccelFactory.zeroAccel
     new BlobPath(v, a)
   }
-  
+
   // make these into functions so that they are executed anew
   // each time we choose one
   // TODO: generate these programatically instead of hard-coding them?
   val origins = List(
-      // starting from bottom:
-      () => BalloonClusterOrigin(new BlobPosition(10,10), pathFromVel(5,5)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10,10), pathFromVel(-5,5)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,10), pathFromVel(0,5)),
-      
-      // starting from top:
-      () => BalloonClusterOrigin(new BlobPosition(10,GameFactory.BOUNDS_Y - 10), pathFromVel(5,-5)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10,GameFactory.BOUNDS_Y - 10), pathFromVel(-5,-5)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,GameFactory.BOUNDS_Y - 10), pathFromVel(0,-5)),
-      
-      // starting from sides:
-      () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y / 2), pathFromVel(5,0)),
-      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y / 2), pathFromVel(-5,0))
-  )
+    // starting from bottom:
+    () => BalloonClusterOrigin(new BlobPosition(10, 10), pathFromVel(5, 5)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, 10), pathFromVel(-5, 5)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, 10), pathFromVel(0, 5)),
+
+    // starting from top:
+    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y - 10), pathFromVel(5, -5)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y - 10), pathFromVel(-5, -5)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, GameFactory.BOUNDS_Y - 10), pathFromVel(0, -5)),
+
+    // starting from sides:
+    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y / 2), pathFromVel(5, 0)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y / 2), pathFromVel(-5, 0)))
 
   def random = origins(Balloons.rnd.nextInt(origins.size))()
 }
 
 object BalloonCluster {
-  
-  def balloonCluster(num:Int, t:BlobTransform):BlobIF = {
+
+  def balloonCluster(num: Int, t: BlobTransform): BlobIF = {
     val r = Balloons.renderer.get
     val start = BalloonClusterOrigin.random
     val cluster = new BlobCluster(start.pos, start.path, r)
@@ -210,9 +260,9 @@ object BalloonCluster {
     cluster.setDebugStr(s"cluster ${num}")
     cluster
   }
-  
-  val clusterSizes = List(1,2,3,4,5)
-  def randomCluster(t:BlobTransform):BlobIF = {
+
+  val clusterSizes = List(1, 2, 3, 4, 5)
+  def randomCluster(t: BlobTransform): BlobIF = {
     balloonCluster(clusterSizes(Balloons.rnd.nextInt(clusterSizes.size)), t)
   }
 }
