@@ -5,10 +5,14 @@ import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobSource
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTrigger
 import com.github.adsgray.gdxtry1.engine.blob.NullBlob
+import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobScaleDecorator
+import com.github.adsgray.gdxtry1.engine.position.BlobPosition
 import com.github.adsgray.gdxtry1.engine.util.AccelFactory
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
 import com.github.adsgray.gdxtry1.engine.util.PositionFactory
-import com.github.adsgray.gdxtry1.engine.blob.decorator.BlobScaleDecorator
+import com.github.adsgray.gdxtry1.engine.blob.BaseTextBlob
+import com.badlogic.gdx.graphics.Color
+import com.github.adsgray.gdxtry1.engine.util.PathFactory
 
 object blobTrigger {
   def apply(f: => (BlobIF,  BlobIF) => BlobIF) = new BlobTrigger() {
@@ -38,6 +42,20 @@ object fastGrower {
       Array(1500, 1)
     )
     new BlobScaleDecorator(b, entries)
+  }
+}
+
+object flashMessageAtBlob {
+  // at position of b
+  def apply(b:BlobIF, msg: String) = {
+    val r = b.getRenderer
+    // cannot do new b.getRenderer.TextConfig() because "stable identifier required"
+    val rc = new r.TextConfig(Color.WHITE, 2.5f)
+    val fm = new BaseTextBlob(new BlobPosition(b.getPosition), GameFactory.zeroVelocity, AccelFactory.zeroAccel, r, rc)
+    fm.setPath(PathFactory.squarePath(10, 3))
+    fm.setLifeTime(25) // 1 second
+    fm.setText(msg)
+    fm
   }
 }
 

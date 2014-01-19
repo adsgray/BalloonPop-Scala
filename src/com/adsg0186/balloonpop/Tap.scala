@@ -47,9 +47,11 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   def done:Unit = {
     Log.d("trace", s"tap got ${popped} balloons for ${points} points")
     
+
     // combo bonus points:
     popped match {
       case num if (num > 1 ) => 
+        b.getWorld.addBlobToWorld(flashMessageAtBlob(b, s"${popped} COMBO!"))
         // 2-combo gets you 100 points, 3-combo 200, etc...
         val bonus = (num - 1) * comboBonusPoints
         Log.d("trace", s"combo bonus: ${bonus}")
