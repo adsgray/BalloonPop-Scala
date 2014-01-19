@@ -80,14 +80,14 @@ trait asteroidBalloonTrait extends Balloon {
     BlobOffset(offset, -offset))
 
   // normalized velocity along the vector
-  val velocityMultiplier = 20 
+  val velocityMultiplier = 20
   def velocityFromOffset(bo: BlobOffset) = bo match {
     case BlobOffset(x, y) => new BlobVelocity(x / offset * velocityMultiplier, y / offset * velocityMultiplier)
   }
-  
+
   val accelMultiplier = -1
   def accelFromOffset(bo: BlobOffset) = bo match {
-    case BlobOffset(x,y) => new LinearAccel(x / offset * accelMultiplier, y / offset * accelMultiplier)
+    case BlobOffset(x, y) => new LinearAccel(x / offset * accelMultiplier, y / offset * accelMultiplier)
   }
 
   override def popSound = GameSound.asteroidBam
@@ -179,7 +179,7 @@ object Balloons {
   // get a largeBalloon and re-wrap it as an AsteroidBalloon
   // also make it rainbow-y
   def asteroidBalloon: Balloon = largeBalloon match {
-    case LargeBalloon(b) => 
+    case LargeBalloon(b) =>
       import BlobFactory._
       AsteroidBalloon(rainbowColorCycler(b, 3))
   }
@@ -188,8 +188,15 @@ object Balloons {
   // might need a map...
 
   val balloonChoices = List[() => Balloon](
-    smallBalloon _,
+    // hack to make it more likely to get
+    // largeBaloon and smallBallon than asteroidBalloon
     largeBalloon _,
+    largeBalloon _,
+    largeBalloon _,
+
+    smallBalloon _,
+    smallBalloon _,
+
     asteroidBalloon _)
 
   def randomBalloon: Balloon = balloonChoices(rnd.nextInt(balloonChoices.size))()
@@ -198,8 +205,8 @@ object Balloons {
 
 object BalloonPath {
 
-  def speed = 10
-  def interval = 5
+  def speed = 10 + Balloons.rnd.nextInt(20) - 10
+  def interval = 5 + Balloons.rnd.nextInt(5)
 
   // paths that loop
   val closedPaths = List(
@@ -230,24 +237,27 @@ object BalloonClusterOrigin {
     val a = AccelFactory.zeroAccel
     new BlobPath(v, a)
   }
+  
+  def xvel = 5 + Balloons.rnd.nextInt(3)
+  def yvel = 5 + Balloons.rnd.nextInt(3)
 
   // make these into functions so that they are executed anew
   // each time we choose one
   // TODO: generate these programatically instead of hard-coding them?
   val origins = List(
     // starting from bottom:
-    () => BalloonClusterOrigin(new BlobPosition(10, 10), pathFromVel(5, 5)),
-    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, 10), pathFromVel(-5, 5)),
-    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, 10), pathFromVel(0, 5)),
+    () => BalloonClusterOrigin(new BlobPosition(10, 10), pathFromVel(xvel, yvel)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, 10), pathFromVel(-xvel, yvel)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, 10), pathFromVel(0, yvel)),
 
     // starting from top:
-    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y - 10), pathFromVel(5, -5)),
-    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y - 10), pathFromVel(-5, -5)),
-    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, GameFactory.BOUNDS_Y - 10), pathFromVel(0, -5)),
+    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y - 10), pathFromVel(xvel, -yvel)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y - 10), pathFromVel(-xvel, -yvel)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2, GameFactory.BOUNDS_Y - 10), pathFromVel(0, -yvel)),
 
     // starting from sides:
-    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y / 2), pathFromVel(5, 0)),
-    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y / 2), pathFromVel(-5, 0)))
+    () => BalloonClusterOrigin(new BlobPosition(10, GameFactory.BOUNDS_Y / 2), pathFromVel(xvel, 0)),
+    () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10, GameFactory.BOUNDS_Y / 2), pathFromVel(-xvel, 0)))
 
   def random = origins(Balloons.rnd.nextInt(origins.size))()
 }
