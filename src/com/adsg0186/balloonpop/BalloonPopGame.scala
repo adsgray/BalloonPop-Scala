@@ -48,6 +48,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     world.addBlobToWorld(ScoreDisplay(renderer))
     ScoreDisplay.refreshText
     BalloonCreator(world) // adds itself to the world
+    GameTimer(world)
   }
 
   def start(): Unit = { 

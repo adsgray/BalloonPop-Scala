@@ -37,9 +37,9 @@ object nullBlob {
 }
 
 object fastGrower {
-  def apply(b:BlobIF) = {
+  def apply(b:BlobIF, scale:Int = 1500) = {
     val entries = Array(
-      Array(1500, 1)
+      Array(scale, 1)
     )
     new BlobScaleDecorator(b, entries)
   }
