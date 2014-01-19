@@ -11,13 +11,16 @@ class GameSound(context: Context) {
 
   val sounds = Map[SoundId, Int](
     blop -> soundpool.load(R.raw.blop),
+    plop -> soundpool.load(R.raw.plop),
+    honk -> soundpool.load(R.raw.honk),
     bamwong -> soundpool.load(R.raw.bamwong),
     boum -> soundpool.load(R.raw.boum),
     bien -> soundpool.load(R.raw.bien),
     beautravail -> soundpool.load(R.raw.beautravail),
     yahoo1 -> soundpool.load(R.raw.yahoo1),
     yahoo2 -> soundpool.load(R.raw.yahoo2),
-    yahoo3 -> soundpool.load(R.raw.yahoo3))
+    yahoo3 -> soundpool.load(R.raw.yahoo3),
+    tickSound -> soundpool.load(R.raw.tick))
 
   def playSound(id: SoundId) = sounds get id map { resid => soundpool.play(resid) }
 }
@@ -32,11 +35,14 @@ object GameSound {
 
   object SoundId extends Enumeration {
     type SoundId = Value
-    val blop, bamwong, boum, bien, beautravail, yahoo1, yahoo2, yahoo3 = Value
+    val blop, bamwong, boum, bien, beautravail, yahoo1, yahoo2, yahoo3, tickSound, plop, honk = Value
   }
 
   import SoundId._
   def playSound(id: SoundId) = instance map { gs => gs.playSound(id) }
+
+  val popList = List(plop, blop)
+  def pop = playSound(popList(Balloons.rnd.nextInt(popList.size)))
 
   val yahooList = List(yahoo1, yahoo2, yahoo3)
   def yahoo = playSound(yahooList(Balloons.rnd.nextInt(yahooList.size)))

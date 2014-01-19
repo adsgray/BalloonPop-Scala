@@ -28,7 +28,7 @@ object FinalScoreDisplay {
     msgDisplay(w, new BlobPosition(100, 1000), PathFactory.squarePathClockwise(10, 5), "Good Job!");
     msgDisplay(w, new BlobPosition(100, 700), PathFactory.squarePath(10, 5), "Press BACK");
     import GameSound.SoundId._
-    GameSound.playSound(beautravail)
+    GameSound.playSound(honk)
   }
 
   def destroy = {}

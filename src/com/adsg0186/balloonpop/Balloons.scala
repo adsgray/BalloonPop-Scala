@@ -36,8 +36,7 @@ trait Balloon extends BlobDecorator {
     b
   }
 
-  import GameSound.SoundId._
-  def popSound = GameSound.playSound(blop)
+  def popSound = GameSound.pop
 
   def explosion = {
     leave

@@ -41,8 +41,11 @@ class GameTimer(b: BlobIF, endGame: => Unit, timeLimit:Int) extends BlobDecorato
       ret = false
     }
 
+    import GameSound.SoundId._
     tickMessages.get(ticks) match {
-      case Some(str) => getWorld.addBlobToWorld(timerFlashMessage(str))
+      case Some(str) => 
+        getWorld.addBlobToWorld(timerFlashMessage(str))
+        GameSound.playSound(tickSound)
       case _ => Unit
     }
 
