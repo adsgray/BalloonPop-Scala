@@ -16,6 +16,7 @@ import com.github.adsgray.gdxtry1.engine.util.PositionFactory
 import com.github.adsgray.gdxtry1.engine.velocity.BlobVelocity
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF.BlobTransform
 import android.util.Log
+import com.github.adsgray.gdxtry1.engine.position.PositionIF
 
 // Balloons are worth points when you pop them
 trait Balloon extends BlobDecorator {
@@ -130,23 +131,45 @@ object BalloonPath {
 
 }
 
-object BalloonCluster {
-  
+// starting position and path for a BalloonCluster
+// pair them because they are not independent
+// eg start at top right and go down and to the left...
+case class BalloonClusterOrigin(pos:PositionIF, path:BlobPath) 
+object BalloonClusterOrigin {
   // TODO choose cluster position and path randomly
-  def position = {
+  def randomPosition = {
     new BlobPosition(10,10)
   }
-  
-  def path = {
-    //PathFactory.stationary
-    val v = new BlobVelocity(5,5)
+   
+  def pathFromVel(xvel:Int, yvel:Int) = {
+    val v = new BlobVelocity(xvel, yvel)
     val a = AccelFactory.zeroAccel
     new BlobPath(v, a)
   }
+  
+  // make these into functions so that they are executed anew
+  // each time we choose one
+  val origins = List(
+      // starting from bottom:
+      () => BalloonClusterOrigin(new BlobPosition(10,10), pathFromVel(5,5)),
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10,10), pathFromVel(-5,5)),
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,10), pathFromVel(0,5)),
+      
+      // starting from top:
+      () => BalloonClusterOrigin(new BlobPosition(10,GameFactory.BOUNDS_Y - 10), pathFromVel(5,-5)),
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X - 10,GameFactory.BOUNDS_Y - 10), pathFromVel(-5,-5)),
+      () => BalloonClusterOrigin(new BlobPosition(GameFactory.BOUNDS_X / 2,GameFactory.BOUNDS_Y - 10), pathFromVel(0,-5))
+  )
 
+  def random = origins(Balloons.rnd.nextInt(origins.size))()
+}
+
+object BalloonCluster {
+  
   def balloonCluster(num:Int, t:BlobTransform):BlobIF = {
     val r = Balloons.renderer.get
-    val cluster = new BlobCluster(position, path, r)
+    val start = BalloonClusterOrigin.random
+    val cluster = new BlobCluster(start.pos, start.path, r)
     // add num blobs to cluster
     (1 to num) map { i =>
       val b = Balloons.randomBalloon

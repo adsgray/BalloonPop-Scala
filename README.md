@@ -16,9 +16,9 @@ From [Flashkit](http://flashkit.com)
 
 ### TODO:
 1. Tag blobengine when changes settle
-2. BlobengineUtil.scala to wrap triggers, sources, etc
-3. font
-4. sounds
+2. ~~BlobengineUtil.scala to wrap triggers, sources, etc~~
+3. ~~font~~
+4. ~~sounds~~ added to res/raw but not integrated
 5. time limited game with countdown
 6. high scores (top 5, also top 5 score/taps ratio)
 7. Lock orientation at portrait
