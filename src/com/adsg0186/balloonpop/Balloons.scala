@@ -162,10 +162,10 @@ object Balloons {
     blob
   }
 
-  def smallBalloonSize = 20
+  def smallBalloonSize = 20 + rnd.nextInt(20) - 10
   def smallBalloon: Balloon = SmallBalloon(balloonBlob)
 
-  def largeBalloonSize = 60
+  def largeBalloonSize = 60 + rnd.nextInt(30) - 15
   def largeBalloon: Balloon = {
     val r = renderer.get
     val b = balloonBlob
@@ -179,7 +179,9 @@ object Balloons {
   // get a largeBalloon and re-wrap it as an AsteroidBalloon
   // also make it rainbow-y
   def asteroidBalloon: Balloon = largeBalloon match {
-    case LargeBalloon(b) => AsteroidBalloon(BlobFactory.rainbowColorCycler(b, 3))
+    case LargeBalloon(b) => 
+      import BlobFactory._
+      AsteroidBalloon(rainbowColorCycler(b, 3))
   }
 
   // TODO: allow a small chance of asteroidBalloon

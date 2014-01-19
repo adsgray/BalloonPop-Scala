@@ -50,7 +50,7 @@ object GameSound {
   val goodJobList = List(bien, beautravail)
   def goodJob = playSound(goodJobList(Balloons.rnd.nextInt(goodJobList.size)))
   
-  val asteroidList = List(boum, bamwong)
+  val asteroidList = List(bamwong)
   def asteroidBam = playSound(asteroidList(Balloons.rnd.nextInt(asteroidList.size)))
 
   def get = instance
