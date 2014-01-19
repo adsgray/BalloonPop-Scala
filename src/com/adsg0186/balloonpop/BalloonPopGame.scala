@@ -44,6 +44,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     initDirectionListener
     // throw away return value as it's creating a singleton
     world.addBlobToWorld(ScoreDisplay(renderer))
+    ScoreDisplay.refreshText
   }
 
   // TODO: put this somewhere reusable

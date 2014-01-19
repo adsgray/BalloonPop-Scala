@@ -103,6 +103,7 @@ object Tap {
     val tap = TapBlob(b)
     w.addMissileToWorld(tap)
     currentTap = Some(tap)
+    GameState.incPins(1)
     tap
   }
 

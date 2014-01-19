@@ -20,7 +20,7 @@ class ScoreDisplay(val r:Renderer) extends BaseTextBlob(null, null, null, r, nul
   // at the bottom:
   setPosition(new BlobPosition(10,100))
   setPath(PathFactory.stationary)
-  val rc = new r.TextConfig(Color.WHITE, 3.0f)
+  val rc = new r.TextConfig(Color.WHITE, 2.5f)
   setRenderConfig(rc)
 }
 
@@ -31,17 +31,16 @@ object ScoreDisplay {
   def apply(r:Renderer):ScoreDisplay = display match {
     case None => 
       display = Some(new ScoreDisplay(r))
-      setScore(0)
       display.get
     case Some(d) => 
       display.get
   }
   
-  def setScore(score:Int) = display match {
-    case Some(d) => d.setText(s"Score: ${score}")
-    case None => // error
+  def refreshText = display match {
+    case Some(d) => d.setText(s"Score: ${GameState.score}    Pins used: ${GameState.pins}")
+    case None => Unit // error
   }
-  
+
   // braces for clarity
   def destroy = { display = None }
   
