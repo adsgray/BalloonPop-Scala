@@ -20,7 +20,7 @@ object tapCollisionTrigger extends BlobTrigger {
     Tap.collision(secondary) // to track how many balloons this tap has popped
 
     secondary match {
-      case balloon: Balloon => 
+      case balloon: Balloon =>
         GameState.incScore(balloon.points)
         balloon.reactToPop
     }
@@ -43,21 +43,30 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   var popped = 0
   var points = 0
   val comboBonusPoints = 50
-  
-  def done:Unit = {
+
+  def done: Unit = {
     Log.d("trace", s"tap got ${popped} balloons for ${points} points")
-    
 
     // combo bonus points:
     popped match {
-      case num if (num > 1 ) => 
+      case num if (num > 1) =>
         b.getWorld.addBlobToWorld(flashMessageAtBlob(b, s"${popped} COMBO!"))
-        if (num >= 5) GameSound.yahoo else GameSound.goodJob
+
+        var bonus = (num - 1) * comboBonusPoints
+
+        if (num >= 5) {
+          GameSound.yahoo
+          // 5 combos are hard so they DOUBLE your bonus?!?!
+          bonus *= 2
+        } else {
+          GameSound.goodJob
+        }
+
         // 2-combo gets you 100 points, 3-combo 200, etc...
-        val bonus = (num - 1) * comboBonusPoints
         Log.d("trace", s"combo bonus: ${bonus}")
+
         GameState.incScore(bonus)
-        // also play a sound and display a message
+      // also play a sound and display a message
       case _ => Unit // no bonus otherwise
     }
   }
@@ -85,11 +94,11 @@ object Tap {
     currentTap = None
   }
 
-  def collision(b:BlobIF) = {
-    currentTap map { t => 
-      t.popped += 1 
+  def collision(b: BlobIF) = {
+    currentTap map { t =>
+      t.popped += 1
       b match {
-        case balloon : Balloon => t.points += balloon.points
+        case balloon: Balloon => t.points += balloon.points
       }
     }
   }

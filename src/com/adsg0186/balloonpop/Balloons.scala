@@ -237,7 +237,7 @@ object BalloonClusterOrigin {
     val a = AccelFactory.zeroAccel
     new BlobPath(v, a)
   }
-  
+
   def xvel = 5 + Balloons.rnd.nextInt(3)
   def yvel = 5 + Balloons.rnd.nextInt(3)
 
