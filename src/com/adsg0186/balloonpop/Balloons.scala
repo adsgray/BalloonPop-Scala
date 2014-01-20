@@ -209,7 +209,7 @@ object BalloonPath {
   def interval = 5 + Balloons.rnd.nextInt(5)
 
   // paths that loop
-  val closedPaths = List(
+  def closedPaths = List(
     PathFactory.backAndForth(speed, interval),
     PathFactory.backAndForthLeft(speed, interval),
     PathFactory.squarePath(speed, interval),
@@ -218,7 +218,10 @@ object BalloonPath {
     PathFactory.upAndDown(speed, interval))
 
   // choose one of the above paths randomly
-  def chooseClosedPath = closedPaths(Balloons.rnd.nextInt(closedPaths.size))
+  def chooseClosedPath = {
+    val paths = closedPaths
+    paths(Balloons.rnd.nextInt(paths.size))
+  }
 
 }
 
