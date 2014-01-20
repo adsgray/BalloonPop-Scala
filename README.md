@@ -25,5 +25,6 @@ From [1001 Free Fonts](http://1001freefonts.com)
 7. ~~Lock orientation at portrait~~
 8. sound/vibration settings screen
 8. help screen
+9. must allow multiple simultaneous "live" Taps but requires Map-ping them
 
 
