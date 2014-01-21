@@ -153,28 +153,19 @@ object Balloons {
 
   def balloonPath = BalloonPath.chooseClosedPath
 
-  def balloonBlob: BlobIF = {
+  def balloonBlob(size:Int): BlobIF = {
     val r = renderer.get
-    val size = smallBalloonSize
     val rc = new r.CircleConfig(balloonColor, size)
     val blob = BlobFactory.circleBlob(balloonPosition, balloonPath, rc, r)
     blob.setExtent(new CircleExtent(size))
     blob
   }
 
-  def smallBalloonSize = 20 + rnd.nextInt(20) - 10
-  def smallBalloon: Balloon = SmallBalloon(balloonBlob)
+  def smallBalloonSize = 25 + rnd.nextInt(10) 
+  def smallBalloon: Balloon = SmallBalloon(balloonBlob(smallBalloonSize))
 
-  def largeBalloonSize = 60 + rnd.nextInt(30) - 15
-  def largeBalloon: Balloon = {
-    val r = renderer.get
-    val b = balloonBlob
-    val size = largeBalloonSize
-    val rc = new r.CircleConfig(balloonColor, size)
-    b.setRenderConfig(rc)
-    b.setExtent(new CircleExtent(size))
-    LargeBalloon(b)
-  }
+  def largeBalloonSize = 65 + rnd.nextInt(30)
+  def largeBalloon: Balloon = LargeBalloon(balloonBlob(largeBalloonSize))
 
   // get a largeBalloon and re-wrap it as an AsteroidBalloon
   // also make it rainbow-y
@@ -286,7 +277,7 @@ object BalloonCluster {
     cluster
   }
 
-  val clusterSizes = List(1, 2, 3, 4, 5)
+  val clusterSizes = List(2, 3, 4, 5, 6)
   def randomCluster(t: BlobTransform): BlobIF = {
     balloonCluster(clusterSizes(Balloons.rnd.nextInt(clusterSizes.size)), t)
   }
