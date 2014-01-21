@@ -1,5 +1,8 @@
 package com.adsg0186.balloonpop
 
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+
 import com.badlogic.gdx.graphics.Color
 import com.github.adsgray.gdxtry1.engine.WorldIF
 import com.github.adsgray.gdxtry1.engine.blob.BlobIF
@@ -17,8 +20,9 @@ object tapCollisionTrigger extends BlobTrigger {
   override def trigger(source: BlobIF, secondary: BlobIF): BlobIF = {
     Log.d("trace", "Tap collided with a balloon!")
 
-    Tap.collision(secondary) // to track how many balloons this tap has popped
+    Tap.collision(source, secondary) // to track how many balloons this tap has popped
 
+    // TODO: move this to TapBlob.pop ?
     secondary match {
       case balloon: Balloon =>
         GameState.incScore(balloon.points)
@@ -34,7 +38,7 @@ object onTapComplete extends BlobTrigger {
   override def trigger(source: BlobIF, secondary: BlobIF): BlobIF = {
     Log.d("trace", "Tap done")
     // play a sound?
-    Tap.remove
+    Tap.remove(source)
     source
   }
 }
@@ -44,20 +48,28 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
   var points = 0
   val comboBonusPoints = 50
 
+  def pop(b: BlobIF): Unit = b match {
+    case balloon: Balloon =>
+      popped += 1
+      points += balloon.points
+    case _ =>
+      Log.e("tap", "tried to pop a non-balloon??")
+  }
+
   def done: Unit = {
     Log.d("trace", s"tap got ${popped} balloons for ${points} points")
 
     // combo bonus points:
     popped match {
       case num if (num > 1) =>
-        b.getWorld.addBlobToWorld(flashMessageAtBlob(b, s"${popped} COMBO!"))
-
+        var comboMsg = s"${popped} COMBO!"
         var bonus = (num - 1) * comboBonusPoints
 
         if (num >= 5) {
           GameSound.yahoo
           // 5 combos are hard so they DOUBLE your bonus?!?!
           bonus *= 2
+          comboMsg += " WOW!"
         } else {
           GameSound.goodJob
         }
@@ -65,6 +77,7 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
         // 2-combo gets you 100 points, 3-combo 200, etc...
         Log.d("trace", s"combo bonus: ${bonus}")
 
+        b.getWorld.addBlobToWorld(flashMessageAtBlob(b, comboMsg))
         GameState.incScore(bonus)
       // also play a sound and display a message
       case _ => Unit // no bonus otherwise
@@ -77,33 +90,29 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
 object Tap {
 
   val extentRadius = 30
-  val lifeTime = 8 // 12 = half a second, 8 = about 1/3 of a second
-  var currentTap: Option[TapBlob] = None
+  val lifeTime = 12 // 12 = half a second, 8 = about 1/3 of a second
 
-  def apply(pos: BlobPosition, w: WorldIF, r: Renderer): BlobIF = {
-    currentTap match {
-      case Some(t) =>
-        Log.d("trace", "currentTap still exists")
-        currentTap.get
-      case None => createNewTapBlob(pos, w, r)
-    }
+  import scala.collection.mutable.{HashMap, SynchronizedMap}
+  var tapMap = new HashMap[BlobIF, TapBlob]() with SynchronizedMap[BlobIF, TapBlob]
+
+  // called by GDX input thread
+  def apply(pos: BlobPosition, w: WorldIF, r: Renderer): Unit = {
+    val tap = createNewTapBlob(pos, w, r)
+    tapMap += (tap.baseBlob -> tap)
+    Log.d("tap", s"added Tap to map, size now ${tapMap.size}")
   }
 
-  def remove = {
-    currentTap map { t => t.done }
-    currentTap = None
+  def remove(tapBaseBlob: BlobIF) = {
+    val base = tapBaseBlob.baseBlob
+    tapMap get base map { t => t.done }
+    tapMap -= base
+    Log.d("tap", s"removed Tap from list, size now ${tapMap.size}")
   }
 
-  def collision(b: BlobIF) = {
-    currentTap map { t =>
-      t.popped += 1
-      b match {
-        case balloon: Balloon => t.points += balloon.points
-      }
-    }
-  }
+  // called by WorldTicker thread
+  def collision(tapBaseBlob: BlobIF, b: BlobIF) = tapMap get tapBaseBlob.baseBlob map { t => t.pop(b) }
 
-  def createNewTapBlob(pos: BlobPosition, w: WorldIF, r: Renderer): BlobIF = {
+  def createNewTapBlob(pos: BlobPosition, w: WorldIF, r: Renderer): TapBlob = {
     //public static BlobIF circleBlob(PositionIF p, BlobPath path, CircleConfig rc, Renderer r) {
     val rc = new r.CircleConfig(Color.WHITE, 1)
     val b = BlobFactory.circleBlob(pos, PathFactory.stationary, rc, r)
@@ -114,7 +123,6 @@ object Tap {
     b.registerTickDeathTrigger(onTapComplete)
     val tap = TapBlob(b)
     w.addMissileToWorld(tap)
-    currentTap = Some(tap)
     GameState.incPins(1)
     tap
   }

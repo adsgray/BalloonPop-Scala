@@ -24,9 +24,7 @@ case class myDirectionListener(world: WorldIF, renderer: Renderer) extends Defau
     // decided which sounds to play for score/combo
 
     //super.onTap(x, y, count)
-    if (enabled) {
-      val tap = Tap(new BlobPosition(x, y), world, renderer)
-    }
+    if (enabled) Tap(new BlobPosition(x, y), world, renderer)
   }
 
   def disable = { enabled = false }
