@@ -5,17 +5,15 @@ import android.util.Log
 trait GameState {
   var score = 0
   var pins = 0
-  var ticksLeft = 1000
 
   def init = {
     score = 0
     pins = 0
-    ticksLeft = 1000
   }
 
   def incScore(delta:Int) = score += delta
   def incPins(delta:Int) = pins += delta
-
+  def scorePerPin = if (pins > 0) score.toFloat / pins.toFloat else 0.0f
 }
 
 object GameState extends GameState {
