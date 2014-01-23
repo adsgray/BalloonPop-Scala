@@ -73,6 +73,7 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
     ScoreDisplay.destroy
     GameState.destroy
     FinalScoreDisplay.destroy
+    GameTimer.destroy
 
     // kill the balloonCreator
     BalloonCreator.destroy
