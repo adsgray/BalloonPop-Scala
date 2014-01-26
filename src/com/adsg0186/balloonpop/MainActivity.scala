@@ -12,5 +12,6 @@ class MainActivity extends Activity with ActivityUtil {
     setContentView(R.layout.activity_main);
     
     findView[Button](R.id.play_button).onClick { v => goToActivity(classOf[GDXActivity])}
+    findView[Button](R.id.settings_button).onClick { v => goToActivity(classOf[SettingsActivity])}
   }
 }
