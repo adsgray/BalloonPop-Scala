@@ -2,6 +2,7 @@ package com.adsg0186.balloonpop
 
 import java.util.Timer
 import java.util.TimerTask
+
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.android.AndroidApplication
@@ -14,11 +15,12 @@ import com.github.adsgray.gdxtry1.engine.input.SimpleDirectionGestureDetector
 import com.github.adsgray.gdxtry1.engine.output.Renderer
 import com.github.adsgray.gdxtry1.engine.util.Game
 import com.github.adsgray.gdxtry1.engine.util.GameFactory
+import com.github.adsgray.gdxtry1.engine.util.LocalHighScore
 import com.github.adsgray.gdxtry1.engine.util.WorldTickTask
+
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import com.github.adsgray.gdxtry1.engine.util.LocalHighScore
-import android.content.Context
 
 //class GDXActivity extends Activity {
 class GDXActivity extends AndroidApplication with ActivityUtil {
@@ -77,8 +79,14 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       renderer = Renderer.getRealInstance
       world = GameFactory.defaultWorld;
       LocalHighScore.createInstance(context)
-      GameSound(context)
-      Vibrate(context)
+
+      if (GamePreferences.get.sound) {
+        GameSound(context)
+      }
+      
+      if (GamePreferences.get.vibrate != 0) {
+        Vibrate(context)
+      }
 
       Gdx.graphics.setContinuousRendering(false)
       game = new BalloonPopGame(world, renderer)
@@ -92,6 +100,8 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       shapes.dispose
       batch.dispose
       Renderer.get().dispose
+      GameSound.destroy
+      Vibrate.destroy
       game.stop
     }
 
