@@ -48,9 +48,8 @@ trait Balloon extends BlobDecorator {
     exploding
   }
 
-  // make this a def so it is easily override-able
-  def vibrateLength = 5
-
+  def vibrateLength = GamePreferences.getVibrateLength
+  
   def reactToPop: Unit = {
     explosion
     popSound
@@ -92,7 +91,7 @@ trait asteroidBalloonTrait extends Balloon {
 
   override def popSound = GameSound.asteroidBam
 
-  override def vibrateLength = 10
+  override def vibrateLength = GamePreferences.getVibrateLength * 2
 
   override def reactToPop = {
     // explode ourselves

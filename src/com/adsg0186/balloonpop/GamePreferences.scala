@@ -51,13 +51,10 @@ object GamePreferences {
   }
 
   // map vibrate setting to vibrate length value
-  def getVibrateLength = cache map {
-    p =>
-      p.vibrate match {
-        case 0 => 0
-        case 1 => 10
-        case 2 => 20
-      }
+  def getVibrateLength = cache.get.vibrate match {
+     case 0 => 0
+     case 1 => 10
+     case 2 => 20
   }
 
   def setVibrate(vib: Int) = {
