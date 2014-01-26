@@ -5,5 +5,10 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="play">Play!</string>
+    <string name="settings_title">Settings</string>
+    <string name="sound">Sound</string>
+    <string name="vibrate_off">Vibrate Off</string>
+    <string name="vibrate_low">Vibrate Low</string>
+    <string name="vibrate_high">Vibrate High</string>
 
 </resources>

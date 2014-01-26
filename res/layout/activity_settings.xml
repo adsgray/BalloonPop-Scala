@@ -2,6 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
+    <TextView
+        android:id="@+id/settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/settings_title" />
+
+    <CheckBox
+        android:id="@+id/soundcheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/sound" />
+
+    <RadioButton
+        android:id="@+id/vibrate_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/soundcheckbox"
+        android:layout_below="@+id/soundcheckbox"
+        android:layout_marginTop="16dp"
+        android:text="@string/vibrate_off" />
+
+    <RadioButton
+        android:id="@+id/vibrate_low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/vibrate_off"
+        android:layout_below="@+id/vibrate_off"
+        android:layout_marginTop="16dp"
+        android:text="@string/vibrate_low" />
+
+    <RadioButton
+        android:id="@+id/vibrate_high"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/vibrate_low"
+        android:layout_below="@+id/vibrate_low"
+        android:layout_marginTop="16dp"
+        android:text="@string/vibrate_high" />
 
 </RelativeLayout>
