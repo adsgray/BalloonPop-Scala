@@ -13,5 +13,7 @@ class MainActivity extends Activity with ActivityUtil {
     
     findView[Button](R.id.play_button).onClick { v => goToActivity(classOf[GDXActivity])}
     findView[Button](R.id.settings_button).onClick { v => goToActivity(classOf[SettingsActivity])}
+    
+    GamePreferences.init(getApplicationContext)
   }
 }

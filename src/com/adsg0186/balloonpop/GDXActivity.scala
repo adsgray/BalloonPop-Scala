@@ -80,8 +80,6 @@ class GDXActivity extends AndroidApplication with ActivityUtil {
       world = GameFactory.defaultWorld;
       LocalHighScore.createInstance(context)
 
-      GamePreferences.init(context)
-
       if (GamePreferences.get.sound) {
         GameSound(context)
       }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import android.widget.CheckBox
+import com.adsg0186.balloonpop.implicitOps._
 
 class SettingsActivity extends Activity with ActivityUtil {
 
@@ -40,7 +41,12 @@ class SettingsActivity extends Activity with ActivityUtil {
   }
   
   // set sound checkbox state from saved preferences
-  def initSoundCheckBox() = findView[CheckBox](R.id.soundcheckbox).setChecked(GamePreferences.getSound)
+  // and set up onCheckedChangeListener
+  def initSoundCheckBox() = {
+    val checkbox = findView[CheckBox](R.id.soundcheckbox)
+    checkbox.setChecked(GamePreferences.getSound)
+    checkbox.onCheckedChange { (b, checked) => GamePreferences.setSound(checked) }
+  }
   
   // set the radio button state from saved preferences
   def initVibrateRadioButtons() = {

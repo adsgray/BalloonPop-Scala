@@ -33,7 +33,6 @@
             android:id="@+id/vibrate_off"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:onClick="onRadioButtonClicked"
             android:text="@string/vibrate_off" />
 
