@@ -21,9 +21,9 @@ From [1001 Free Fonts](http://1001freefonts.com)
 3. ~~font~~
 4. ~~sounds added to res/raw but not integrated~~ ~~vibrate~~
 5. ~~time limited game with countdown~~
-6. high scores (top 5, also top 5 score/taps ratio)
+6. high scores (top 5, also top 5 score/taps ratio) Maybe use Google Play?
 7. ~~Lock orientation at portrait~~
-8. sound/vibration settings screen
+8. ~~sound/vibration settings screen~~
 8. help screen
 9. ~~must allow multiple simultaneous "live" Taps but requires Map-ping them~~
 
