@@ -33,12 +33,7 @@ object GamePreferences {
   }
 
   def setSound(snd: Boolean) = {
-    store map { s =>
-      val editor = s.edit
-      editor.putBoolean(createKey("sound"), snd)
-      editor.commit
-    }
-
+    store map { s => s.edit.putBoolean(createKey("sound"), snd).commit }
     // update local cache
     cache = cache map { p => p.copy(sound = snd) }
     snd
@@ -59,12 +54,8 @@ object GamePreferences {
   }
 
   def setVibrate(vib: Int) = {
-    store map { s =>
-      val editor = s.edit
-      editor.putInt(createKey("vibrate"), vib)
-      editor.commit
-    }
-
+    store map { s => s.edit.putInt(createKey("vibrate"), vib).commit }
+    // update local cache
     cache = cache map { p => p.copy(vibrate = vib) }
     vib
   }
