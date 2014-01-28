@@ -27,4 +27,9 @@ From [1001 Free Fonts](http://1001freefonts.com)
 8. help screen
 9. ~~must allow multiple simultaneous "live" Taps but requires Map-ping them~~
 
-
+### Google Play TODO:
+1. ~~Add BaseBameUtils to Eclipse~~
+2. Make MainActivity extend it
+3. Add _connect with Google Play_ button to Main layout
+4. Add connection complete handler which uploads locally stored
+   scores/achievements to Google Play.
