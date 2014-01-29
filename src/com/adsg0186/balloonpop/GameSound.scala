@@ -7,7 +7,7 @@ import com.github.adsgray.gdxtry1.engine.output.SoundPoolPlayer
 class GameSound(context: Context) {
   import GameSound.SoundId._
 
-  val soundpool: SoundIF = new SoundPoolPlayer(context);
+  val soundpool: SoundIF = new SoundPoolPlayer(context, 1.0f);
 
   val sounds = Map[SoundId, Int](
     blop -> soundpool.load(R.raw.blop),
