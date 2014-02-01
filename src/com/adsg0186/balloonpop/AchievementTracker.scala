@@ -139,7 +139,7 @@ object AchievementTracker {
       Log.d("scores", s"submitting score=$score")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_bestround), score)
 
-      val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f) * 100).round
+      val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f)).round
       Log.d("scores", s"submitting pointsperpin=$perpinAsInt")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_pointsperpin), perpinAsInt)
       
