@@ -161,14 +161,19 @@ object AchievementTracker {
       val score = s.getInt(key("highscore"), 0)
       Log.d("scores", s"submitting score=$score")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_bestround), score)
+      // once submitted, zero out the local one
+      s.edit.putInt(key("highscore"), 0).commit
 
       val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f) * 100).round
       Log.d("scores", s"submitting pointsperpin=$perpinAsInt")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_pointsperpin), perpinAsInt)
+      // once submitted, zero out the local one
+      s.edit.putFloat(key("scoreperpin"), 0).commit
 
       val popped = s.getInt(key("popped"), 0)
       Log.d("scores", s"submitting balloonspopped=$popped")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_balloonspopped), popped)
+      // popped keeps accumulating FOREVER
       
       // unlock achievements
       List(
