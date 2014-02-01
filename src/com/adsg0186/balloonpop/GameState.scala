@@ -5,14 +5,17 @@ import android.util.Log
 trait GameState {
   var score = 0
   var pins = 0
+  var popped = 0;
 
   def init = {
     score = 0
     pins = 0
+    popped = 0;
   }
 
   def incScore(delta:Int) = score += delta
   def incPins(delta:Int) = pins += delta
+  def incPopped(delta:Int) = popped += delta
   def scorePerPin = if (pins > 0) score.toFloat / pins.toFloat else 0.0f
 }
 
@@ -28,6 +31,8 @@ object GameState extends GameState {
     ScoreDisplay.refreshText
     Log.d("trace", s"gamestate incpins by ${delta} pins is ${pins}")
   }
+  
+  // TODO: add balloons popped to score display?
   
   def destroy = init
 }

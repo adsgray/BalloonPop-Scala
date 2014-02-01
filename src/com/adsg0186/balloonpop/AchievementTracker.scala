@@ -24,6 +24,7 @@ object AchievementTracker {
   }
   
   def key(s:String) = s"achievement_$s"
+  def sentKey(s:String) = s"achievement_sent_$s"
   
   def incGamesPlayed = store map { s =>
     Log.d("scores", "inc games played")
@@ -48,6 +49,13 @@ object AchievementTracker {
     if (spp > prev) {
       s.edit.putFloat(k, spp).commit
     }
+  }
+  
+  def savePopped(popped:Int) = store map { s =>
+    Log.d("scores", s"save popped $popped")
+    val k = key("popped")
+    val prev = s.getInt(k, 0)
+    s.edit.putInt(k, prev + popped).commit
   }
   
   // set boolean achievements
@@ -102,6 +110,11 @@ object AchievementTracker {
 
   }
   
+  def processPopped = store map { s =>
+    val popped = s.getInt(key("popped"), 0)
+    // achievement booleans
+  }
+  
   def processGamesPlayed = store map { s =>
     Log.d("scores", "process games played")
     val k = key("gamesplayed")
@@ -118,15 +131,17 @@ object AchievementTracker {
     }
   }
   
-  def gameCompleted(score:Int, scorePerPin:Float) {
+  def gameCompleted(score:Int, scorePerPin:Float, popped:Int) {
     Log.d("scores", "game completed")
     incGamesPlayed
     saveScore(score)
     saveScorePerPin(scorePerPin)
+    savePopped(popped)
 
     processGamesPlayed
     processScore(score)
     processScorePerPin(scorePerPin)
+    processPopped
     dirty = true;
   }
   
@@ -139,7 +154,7 @@ object AchievementTracker {
       Log.d("scores", s"submitting score=$score")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_bestround), score)
 
-      val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f)).round
+      val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f) * 100).round
       Log.d("scores", s"submitting pointsperpin=$perpinAsInt")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_pointsperpin), perpinAsInt)
       
@@ -157,9 +172,12 @@ object AchievementTracker {
           c.getResources.getString(R.string.achievement_score20000),
           c.getResources.getString(R.string.achievement_score30000),
           c.getResources.getString(R.string.achievement_score50000)
+          // TODO: popped achievements
           ) map { achString =>
-            if (s.getBoolean(achString, false)) {
+            // only send achievements the first time they are earned
+            if (s.getBoolean(achString, false) && !s.getBoolean(sentKey(achString), false)) {
               Log.d("scores", s"unlocking achievement $achString")
+              s.edit.putBoolean(sentKey(achString), true).commit
               gc.unlockAchievement(achString)
             }
       }

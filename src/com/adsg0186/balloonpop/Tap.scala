@@ -79,6 +79,7 @@ case class TapBlob(b: BlobIF) extends BlobDecorator(b) {
 
         b.getWorld.addBlobToWorld(flashMessageAtBlob(b, comboMsg))
         GameState.incScore(bonus)
+        GameState.incPopped(popped)
       // also play a sound and display a message
       case _ => Unit // no bonus otherwise
     }
