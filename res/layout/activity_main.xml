@@ -25,5 +25,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:text="@string/settings_title" />
+    
+    <com.google.android.gms.common.SignInButton
+    android:id="@+id/sign_in_button"
+	android:layout_below="@+id/settings_button"
+	android:layout_marginTop="24dp"
+	android:layout_centerHorizontal="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    
+    <Button
+    android:id="@+id/sign_out_button"
+	android:layout_below="@+id/sign_in_button"
+	android:layout_marginTop="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:layout_centerHorizontal="true"
+    android:text="@string/gms_sign_out"
+    android:visibility="gone" />
 
 </RelativeLayout>
