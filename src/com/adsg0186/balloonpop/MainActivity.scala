@@ -20,8 +20,7 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
         beginUserInitiatedSignIn
       case R.id.sign_out_button =>
         signOut
-        findView[Button](R.id.sign_in_button).setVisibility(View.VISIBLE)
-        findView[Button](R.id.sign_out_button).setVisibility(View.GONE)
+        signedOutButtons
     }
   }
 
