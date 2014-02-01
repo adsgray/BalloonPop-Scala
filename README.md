@@ -31,8 +31,8 @@ From [1001 Free Fonts](http://1001freefonts.com)
 1. ~~Add BaseBameUtils to Eclipse~~
 2. ~~Make MainActivity extend it~~
 3. ~~Add _connect with Google Play_ button to Main layout~~
-4. Add connection complete handler which uploads locally stored
-   scores/achievements to Google Play.
+4. ~~Add connection complete handler which uploads locally stored
+   scores/achievements to Google Play.~~
 
 ### Google Documentation Hilariousness
 These two documents seem to disagree (_mSignedIn_ vs mGamesClient.isConnected):
