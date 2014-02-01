@@ -60,6 +60,8 @@ class BalloonPopGame(world: WorldIF, renderer: Renderer) extends Game {
       dl map { d => d.disable }
       // show final score with message "press back"
       FinalScoreDisplay(world)
+      // Only track completed games. eg. if someone taps back button don't do this:
+      AchievementTracker.gameCompleted(GameState.score, GameState.scorePerPin)
     })
   }
 

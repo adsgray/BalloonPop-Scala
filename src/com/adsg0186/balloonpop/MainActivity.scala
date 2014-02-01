@@ -31,6 +31,7 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
     findView[Button](R.id.sign_out_button).setOnClickListener(googleButtonHandler)
     
     GamePreferences.init(getApplicationContext)
+    AchievementTracker.init(getApplicationContext)
   }
   
   
