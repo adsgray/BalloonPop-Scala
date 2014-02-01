@@ -34,6 +34,10 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
     AchievementTracker.init(getApplicationContext)
   }
   
+  override def onResume = {
+    super.onResume
+    AchievementTracker.saveToGoogle(getGamesClient)
+  }
   
    def onSignInSucceeded(): Unit = {
      findView[Button](R.id.sign_in_button).setVisibility(View.GONE)

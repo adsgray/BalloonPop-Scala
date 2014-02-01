@@ -29,7 +29,14 @@ From [1001 Free Fonts](http://1001freefonts.com)
 
 ### Google Play TODO:
 1. ~~Add BaseBameUtils to Eclipse~~
-2. Make MainActivity extend it
-3. Add _connect with Google Play_ button to Main layout
+2. ~~Make MainActivity extend it~~
+3. ~~Add _connect with Google Play_ button to Main layout~~
 4. Add connection complete handler which uploads locally stored
    scores/achievements to Google Play.
+
+### Google Documentation Hilariousness
+These two documents seem to disagree (_mSignedIn_ vs mGamesClient.isConnected):
+* <https://developers.google.com/games/services/training/signin>
+* <https://developers.google.com/games/services/android/init>
+* P.S. the version of BaseGameActivity I have doesn't have _mSignedIn_. Also
+  doesn't have _mGamesClient_. But has _getGamesClient()_

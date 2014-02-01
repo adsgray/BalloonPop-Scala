@@ -1,5 +1,7 @@
 package com.adsg0186.balloonpop
 
+import com.google.android.gms.games.GamesClient
+
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
@@ -13,6 +15,7 @@ object AchievementTracker {
 
   var store:Option[SharedPreferences] = None
   var c:Context = null // ugh
+  var dirty:Boolean = false
   
   def init(c:Context) = {
     store = Some(PreferenceManager.getDefaultSharedPreferences(c))
@@ -114,5 +117,37 @@ object AchievementTracker {
     processGamesPlayed
     processScore(score)
     processScorePerPin(scorePerPin)
+    dirty = true;
+  }
+  
+  def saveToGoogle(gc:GamesClient) = store map { s => 
+    if (dirty) {
+      // submit scores
+      gc.submitScore(c.getResources.getString(R.string.leaderboard_bestround), s.getInt(key("highscore"), 0))
+      val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f) * 100).round
+      gc.submitScore(c.getResources.getString(R.string.leaderboard_pointsperpin), perpinAsInt)
+      
+      // unlock achievements
+      List(
+          c.getResources.getString(R.string.achievement_wallflower),
+          c.getResources.getString(R.string.achievement_rapidpin),
+          c.getResources.getString(R.string.achievement_goodpin),
+          c.getResources.getString(R.string.achievement_greatpin),
+          c.getResources.getString(R.string.achievement_propin),
+          c.getResources.getString(R.string.achievement_ultrapin),
+          c.getResources.getString(R.string.achievement_played10),
+          c.getResources.getString(R.string.achievement_played100),
+          c.getResources.getString(R.string.achievement_score10000),
+          c.getResources.getString(R.string.achievement_score20000),
+          c.getResources.getString(R.string.achievement_score30000),
+          c.getResources.getString(R.string.achievement_score50000)
+          ) map { achString =>
+            if (s.getBoolean(achString, false)) {
+              gc.unlockAchievement(achString)
+            }
+      }
+
+      dirty = false;
+    }
   }
 }
