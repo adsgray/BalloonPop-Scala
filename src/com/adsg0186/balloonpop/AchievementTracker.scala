@@ -112,7 +112,15 @@ object AchievementTracker {
   
   def processPopped = store map { s =>
     val popped = s.getInt(key("popped"), 0)
-    // achievement booleans
+
+    if (popped > 100) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_100_balloons), true).commit
+    if (popped > 500) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_500_balloons), true).commit
+    if (popped > 1000) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_1000_balloons), true).commit
+    if (popped > 2500) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_2500_balloons), true).commit
+    if (popped > 5000) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_5000_balloons), true).commit
+    if (popped > 20000) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_20000_balloons), true).commit
+    if (popped > 50000) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_50000_balloons), true).commit
+    if (popped > 100000) s.edit.putBoolean(c.getResources.getString(R.string.achievement_popped_100000_balloons), true).commit
   }
   
   def processGamesPlayed = store map { s =>
@@ -157,6 +165,10 @@ object AchievementTracker {
       val perpinAsInt = (s.getFloat(key("scoreperpin"), 0.0f) * 100).round
       Log.d("scores", s"submitting pointsperpin=$perpinAsInt")
       gc.submitScore(c.getResources.getString(R.string.leaderboard_pointsperpin), perpinAsInt)
+
+      val popped = s.getInt(key("popped"), 0)
+      Log.d("scores", s"submitting balloonspopped=$popped")
+      gc.submitScore(c.getResources.getString(R.string.leaderboard_balloonspopped), popped)
       
       // unlock achievements
       List(
@@ -171,14 +183,23 @@ object AchievementTracker {
           c.getResources.getString(R.string.achievement_score10000),
           c.getResources.getString(R.string.achievement_score20000),
           c.getResources.getString(R.string.achievement_score30000),
-          c.getResources.getString(R.string.achievement_score50000)
+          c.getResources.getString(R.string.achievement_score50000),
+          c.getResources.getString(R.string.achievement_popped_100_balloons),
+          c.getResources.getString(R.string.achievement_popped_500_balloons),
+          c.getResources.getString(R.string.achievement_popped_1000_balloons),
+          c.getResources.getString(R.string.achievement_popped_2500_balloons),
+          c.getResources.getString(R.string.achievement_popped_5000_balloons),
+          c.getResources.getString(R.string.achievement_popped_20000_balloons),
+          c.getResources.getString(R.string.achievement_popped_50000_balloons),
+          c.getResources.getString(R.string.achievement_popped_100000_balloons)
+          
           // TODO: popped achievements
           ) map { achString =>
             // only send achievements the first time they are earned
             if (s.getBoolean(achString, false) && !s.getBoolean(sentKey(achString), false)) {
               Log.d("scores", s"unlocking achievement $achString")
-              s.edit.putBoolean(sentKey(achString), true).commit
               gc.unlockAchievement(achString)
+              s.edit.putBoolean(sentKey(achString), true).commit
             }
       }
 

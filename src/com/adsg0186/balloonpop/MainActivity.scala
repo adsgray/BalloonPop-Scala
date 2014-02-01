@@ -43,6 +43,10 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
       v => startActivityForResult(getGamesClient.getLeaderboardIntent(getResources.getString(R.string.leaderboard_pointsperpin)), REQUEST_LEADERBOARD)
     }
 
+    findView[Button](R.id.balloons_leaderboard).onClick { 
+      v => startActivityForResult(getGamesClient.getLeaderboardIntent(getResources.getString(R.string.leaderboard_balloonspopped)), REQUEST_LEADERBOARD)
+    }
+
     findView[Button](R.id.achievements).onClick { 
       v => startActivityForResult(getGamesClient.getAchievementsIntent(), REQUEST_ACHIEVEMENTS)
     }
@@ -64,6 +68,7 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
      findView[Button](R.id.sign_out_button).setVisibility(View.VISIBLE)
      findView[Button](R.id.points_leaderboard).setVisibility(View.VISIBLE)
      findView[Button](R.id.pointsperpin_leaderboard).setVisibility(View.VISIBLE)
+     findView[Button](R.id.balloons_leaderboard).setVisibility(View.VISIBLE)
      findView[Button](R.id.achievements).setVisibility(View.VISIBLE)
   }
   
@@ -72,6 +77,7 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
      findView[Button](R.id.sign_out_button).setVisibility(View.GONE)
      findView[Button](R.id.points_leaderboard).setVisibility(View.GONE)
      findView[Button](R.id.pointsperpin_leaderboard).setVisibility(View.GONE)
+     findView[Button](R.id.balloons_leaderboard).setVisibility(View.GONE)
      findView[Button](R.id.achievements).setVisibility(View.GONE)
   }
 

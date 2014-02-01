@@ -13,6 +13,7 @@
     <string name="gms_sign_out">Sign Out of Google Games</string>
     <string name="points_leaderboard">Points Leaderboard</string>
     <string name="pointsperpin_leaderboard">Points/Pin Leaderboard</string>
+    <string name="balloons_leaderboard">Balloons Popped Leaderboard</string>
     <string name="achievements">Achievements</string>
 
 </resources>
