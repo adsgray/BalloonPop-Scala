@@ -10,10 +10,6 @@ import android.util.Log
 
 class MainActivity extends BaseGameActivity with ActivityUtil {
 
-  // not really used
-  private val REQUEST_LEADERBOARD = 1
-  private val REQUEST_ACHIEVEMENTS = 2
-
   val googleButtonHandler = ClickListener { v => 
     v.getId() match {
       case R.id.sign_in_button => 
@@ -30,25 +26,10 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
     
     findView[Button](R.id.play_button).onClick { v => goToActivity(classOf[GDXActivity])}
     findView[Button](R.id.settings_button).onClick { v => goToActivity(classOf[SettingsActivity])}
+    findView[Button](R.id.highscores).onClick { v => goToActivity(classOf[HighScoreActivity])}
 
     findView[Button](R.id.sign_in_button).setOnClickListener(googleButtonHandler)
     findView[Button](R.id.sign_out_button).setOnClickListener(googleButtonHandler)
-    
-    findView[Button](R.id.points_leaderboard).onClick { 
-      v => startActivityForResult(getGamesClient.getLeaderboardIntent(getResources.getString(R.string.leaderboard_bestround)), REQUEST_LEADERBOARD)
-    }
-
-    findView[Button](R.id.pointsperpin_leaderboard).onClick { 
-      v => startActivityForResult(getGamesClient.getLeaderboardIntent(getResources.getString(R.string.leaderboard_pointsperpin)), REQUEST_LEADERBOARD)
-    }
-
-    findView[Button](R.id.balloons_leaderboard).onClick { 
-      v => startActivityForResult(getGamesClient.getLeaderboardIntent(getResources.getString(R.string.leaderboard_balloonspopped)), REQUEST_LEADERBOARD)
-    }
-
-    findView[Button](R.id.achievements).onClick { 
-      v => startActivityForResult(getGamesClient.getAchievementsIntent(), REQUEST_ACHIEVEMENTS)
-    }
     
     GamePreferences.init(getApplicationContext)
     AchievementTracker.init(getApplicationContext)
@@ -65,19 +46,13 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
   def signedInButtons = {
      findView[Button](R.id.sign_in_button).setVisibility(View.GONE)
      findView[Button](R.id.sign_out_button).setVisibility(View.VISIBLE)
-     findView[Button](R.id.points_leaderboard).setVisibility(View.VISIBLE)
-     findView[Button](R.id.pointsperpin_leaderboard).setVisibility(View.VISIBLE)
-     findView[Button](R.id.balloons_leaderboard).setVisibility(View.VISIBLE)
-     findView[Button](R.id.achievements).setVisibility(View.VISIBLE)
+     findView[Button](R.id.highscores).setVisibility(View.VISIBLE)
   }
   
   def signedOutButtons = {
      findView[Button](R.id.sign_in_button).setVisibility(View.VISIBLE)
      findView[Button](R.id.sign_out_button).setVisibility(View.GONE)
-     findView[Button](R.id.points_leaderboard).setVisibility(View.GONE)
-     findView[Button](R.id.pointsperpin_leaderboard).setVisibility(View.GONE)
-     findView[Button](R.id.balloons_leaderboard).setVisibility(View.GONE)
-     findView[Button](R.id.achievements).setVisibility(View.GONE)
+     findView[Button](R.id.highscores).setVisibility(View.GONE)
   }
 
    def onSignInSucceeded(): Unit = {
@@ -90,4 +65,5 @@ class MainActivity extends BaseGameActivity with ActivityUtil {
    def onSignInFailed(): Unit = {
      signedOutButtons
    } 
+
 }

@@ -28,60 +28,31 @@
     
     <com.google.android.gms.common.SignInButton
     android:id="@+id/sign_in_button"
-	android:layout_below="@+id/settings_button"
-	android:layout_marginTop="16dp"
-	android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
      
     <Button
     android:id="@+id/sign_out_button"
-	android:layout_below="@+id/sign_in_button"
-	android:layout_marginTop="24dp"
+	android:layout_toLeftOf="@+id/sign_in_button"
+	style="?android:attr/buttonStyleSmall"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"
     android:text="@string/gms_sign_out"
-    android:visibility="gone" />
+    android:visibility="gone" 
+    />
 
     <Button
-    android:id="@+id/points_leaderboard"
-	android:layout_below="@+id/sign_out_button"
-	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"
-    android:text="@string/points_leaderboard"
-    android:visibility="gone" />
-
-    <Button
-    android:id="@+id/pointsperpin_leaderboard"
-	android:layout_below="@+id/points_leaderboard"
-	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"
-    android:text="@string/pointsperpin_leaderboard"
-    android:visibility="gone" />
-
-    <Button
-    android:id="@+id/balloons_leaderboard"
-	android:layout_below="@+id/pointsperpin_leaderboard"
-	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"
-    android:text="@string/balloons_leaderboard"
-    android:visibility="gone" />
-
-    <Button
-    android:id="@+id/achievements"
-	android:layout_below="@+id/balloons_leaderboard"
-	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"
-    android:text="@string/achievements"
-    android:visibility="gone" />
+        android:id="@+id/highscores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+	    android:visibility="gone" 
+        android:text="@string/highscores" />
 
 </RelativeLayout>
