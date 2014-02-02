@@ -26,6 +26,7 @@ It will be timed (how many balloons can you pop in 1 minute?) and kid-friendly
 8. ~~sound/vibration settings screen~~
 8. help screen
 9. ~~must allow multiple simultaneous "live" Taps but requires Map-ping them~~
+10. Make it orientation-agnostic
 
 ### Google Play TODO:
 1. ~~Add BaseGameUtils to Eclipse~~
