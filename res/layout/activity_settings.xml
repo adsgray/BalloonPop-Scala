@@ -26,7 +26,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/settings_title"
         android:textColor="@color/titleblue"
-        android:textSize="25sp" />
+        android:textSize="25sp" 
+        />
 
     <CheckBox
         android:id="@+id/soundcheckbox"
