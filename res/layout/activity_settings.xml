@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@drawable/backrepeat"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/titleblue"
+        android:background="@color/paleblue"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        >
 
     <TextView
         android:id="@+id/settings_title"
@@ -10,19 +24,22 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:text="@string/settings_title" />
+        android:text="@string/settings_title"
+        android:textColor="@color/titleblue"
+        android:textSize="25sp" />
 
     <CheckBox
         android:id="@+id/soundcheckbox"
+        android:layout_below="@id/settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/sound" />
 
     <RadioGroup
         android:id="@+id/vibrate_radio_group"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -50,5 +67,7 @@
             android:onClick="onRadioButtonClicked"
             android:text="@string/vibrate_high" />
     </RadioGroup>
+
+    </RelativeLayout>
 
 </RelativeLayout>

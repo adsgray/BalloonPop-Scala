@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/backrepeat"
     tools:context=".HighScoreActivity" >
 
     <TextView
@@ -15,15 +16,21 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
+        android:textColor="@color/titleblue"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:background="@color/paleblue"
+        android:textSize="25sp" 
         android:text="@string/highscores" />
 
     <Button
     android:id="@+id/points_leaderboard"
 	android:layout_below="@+id/highscoretitle"
 	android:layout_marginTop="16dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 	android:layout_centerHorizontal="true"
+        android:background="@drawable/button_normal"
     android:text="@string/points_leaderboard"
     />
 
@@ -31,9 +38,10 @@
     android:id="@+id/pointsperpin_leaderboard"
 	android:layout_below="@+id/points_leaderboard"
 	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 	android:layout_centerHorizontal="true"
+        android:background="@drawable/button_normal"
     android:text="@string/pointsperpin_leaderboard"
     />
 
@@ -41,9 +49,10 @@
     android:id="@+id/balloons_leaderboard"
 	android:layout_below="@+id/pointsperpin_leaderboard"
 	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 	android:layout_centerHorizontal="true"
+        android:background="@drawable/button_normal"
     android:text="@string/balloons_leaderboard"
     />
 
@@ -51,9 +60,10 @@
     android:id="@+id/achievements"
 	android:layout_below="@+id/balloons_leaderboard"
 	android:layout_marginTop="8dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 	android:layout_centerHorizontal="true"
+        android:background="@drawable/button_normal"
     android:text="@string/achievements"
     />
 

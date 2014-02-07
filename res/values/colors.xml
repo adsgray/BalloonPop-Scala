@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue">#B0CCCCFF</color>
+    <color name="bluefocused">#B0EEEEFF</color>
+    <color name="bluepressed">#B0BBBBFF</color>
+    <color name="titleblue">#FF22467C</color>
+    <color name="paleblue">#D05579AF</color>
+</resources>
